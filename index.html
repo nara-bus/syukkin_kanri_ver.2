@@ -3346,6 +3346,7 @@ async function doExport() {
   const fname = `出勤管理_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.json`;
   const appData = {
     version: 1,
+    appId: STORAGE_PREFIX,
     savedAt: now.toISOString(),
     shiftSettings:       localStorage.getItem(LK('shiftSettings'))       || null,
     diaOverrides:        localStorage.getItem(LK('diaOverrides'))        || null,
@@ -3421,6 +3422,18 @@ async function loadAppFromFile() {
 function _applyImport(text, fname) {
   try {
     const data = JSON.parse(text);
+
+    // 別のダイヤ改正版（別アプリ）のバックアップを読み込もうとしていないかチェック。
+    // appIdが無い（古い形式）か、今のSTORAGE_PREFIXと一致しない場合は要注意。
+    if (data.appId !== STORAGE_PREFIX) {
+      const ok = confirm(
+        '⚠️ このバックアップは別のダイヤ改正版（またはそれ以前の形式）のデータの可能性があります。\n' +
+        'ダイヤ番号の意味が今のアプリと異なる場合、誤った内容が反映されることがあります。\n\n' +
+        'それでも読み込みますか？'
+      );
+      if (!ok) return;
+    }
+
     if (data.shiftSettings)     localStorage.setItem(LK('shiftSettings'),     data.shiftSettings);
     if (data.diaOverrides)      localStorage.setItem(LK('diaOverrides'),      data.diaOverrides);
     if (data.shukkinOverrides)  localStorage.setItem(LK('shukkinOverrides'),  data.shukkinOverrides);
@@ -4638,7 +4651,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20260724-001';
+const APP_VERSION = '20260724-002';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
