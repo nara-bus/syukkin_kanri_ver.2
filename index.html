@@ -3423,15 +3423,15 @@ function _applyImport(text, fname) {
   try {
     const data = JSON.parse(text);
 
-    // 別のダイヤ改正版（別アプリ）のバックアップを読み込もうとしていないかチェック。
-    // appIdが無い（古い形式）か、今のSTORAGE_PREFIXと一致しない場合は要注意。
+    // 別のダイヤ改正版（別アプリ）のバックアップ、またはappIdの無い古い形式は
+    // 一切読み込ませない（ダイヤ番号の意味が違うため、混乱を招くだけで良いことがない）。
     if (data.appId !== STORAGE_PREFIX) {
-      const ok = confirm(
-        '⚠️ このバックアップは別のダイヤ改正版（またはそれ以前の形式）のデータの可能性があります。\n' +
-        'ダイヤ番号の意味が今のアプリと異なる場合、誤った内容が反映されることがあります。\n\n' +
-        'それでも読み込みますか？'
+      alert(
+        '⚠️ このバックアップは、今のアプリとは別のダイヤ改正版（またはそれ以前の形式）のデータです。\n' +
+        'ダイヤ番号の意味が異なるため、このアプリには読み込めません。\n\n' +
+        '改正前のデータを確認したい場合は、そのデータを保存したときに使っていたアプリ（旧URL）の方で開いてください。'
       );
-      if (!ok) return;
+      return;
     }
 
     if (data.shiftSettings)     localStorage.setItem(LK('shiftSettings'),     data.shiftSettings);
@@ -4651,7 +4651,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20260724-002';
+const APP_VERSION = '20260724-003';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
