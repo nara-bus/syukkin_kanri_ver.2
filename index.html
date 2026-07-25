@@ -1221,190 +1221,188 @@
 
 <script>
 const ICHIRAN_DATA = [
-    { dia:1, type:'公休', hei:null, doy:null, nch:null },
-    { dia:2, type:'',
-      hei:{ okibo:'4:20', shukkin:'5:50', tochaku:'6:20', start:'6:54', taikin:'16:30', rosen:'イオン・都', kitan:'17:00' },
-      doy:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:44', taikin:'14:20', rosen:'イオン', kitan:'14:50' },
-      nch:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:44', taikin:'14:20', rosen:'イオン', kitan:'14:50' } },
-    { dia:3, type:'中間',
-      hei:{ okibo:'3:55', shukkin:'5:25', tochaku:'5:55', start:'6:25', taikin:'9:07', rosen:'シャープ', kitan:'9:40', okibo2:'13:35', shukkin2:'15:05', tochaku2:'15:35', start2:'16:05', taikin2:'21:01', kitan2:'21:35', rosen2:'' },
-      doy:{ okibo:'6:20', shukkin:'7:50', tochaku:'8:20', start:'8:50', taikin:'19:43', rosen:'西大寺', kitan:'20:15' },
-      nch:{ okibo:'6:20', shukkin:'7:50', tochaku:'8:20', start:'8:50', taikin:'19:43', rosen:'', kitan:'20:15' } },
-    { dia:4, type:'',
-      hei:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:59', rosen:'都・ｲｵﾝ・ｼｬｰﾌﾟ', kitan:'19:30' },
-      doy:{ okibo:'6:15', shukkin:'7:45', tochaku:'8:15', start:'8:49', taikin:'16:08', rosen:'イオン', kitan:'16:40' },
-      nch:{ okibo:'6:15', shukkin:'7:45', tochaku:'8:15', start:'8:49', taikin:'16:08', rosen:'イオン', kitan:'16:40' } },
-    { dia:5, type:'',
-      hei:{ okibo:'3:45', shukkin:'5:15', tochaku:'5:45', start:'6:19', taikin:'14:09', rosen:'シャープ', kitan:'14:40' },
-      doy:{ okibo:'2:35', shukkin:'4:05', tochaku:'4:35', start:'5:07', taikin:'10:53', rosen:'天理', kitan:'11:25' },
-      nch:{ okibo:'2:35', shukkin:'4:05', tochaku:'4:35', start:'5:07', taikin:'10:53', rosen:'天理', kitan:'11:25' } },
-    { dia:6, type:'公休', hei:null, doy:null, nch:null },
-    { dia:7, type:'予備', hei:{ yobi:true }, doy:{ yobi:true }, nch:{ yobi:true } },
-    { dia:8, type:'',
-      hei:{ okibo:'4:30', shukkin:'6:00', tochaku:'6:30', start:'7:00', taikin:'19:37', rosen:'シャープ', kitan:'20:10' },
-      doy:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:20', taikin:'19:43', rosen:'シャープ', kitan:'20:15' },
-      nch:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:20', taikin:'19:43', rosen:'シャープ', kitan:'20:15' } },
-    { dia:9, type:'',
-      hei:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'17:52', rosen:'西大寺', kitan:'18:25' },
-      doy:{ okibo:'5:10', shukkin:'6:40', tochaku:'7:10', start:'7:42', taikin:'16:50', rosen:'西大寺', kitan:'17:20' },
-      nch:{ okibo:'5:10', shukkin:'6:40', tochaku:'7:10', start:'7:42', taikin:'16:50', rosen:'西大寺', kitan:'17:20' } },
-    { dia:10, type:'手入',
-      hei:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:19', taikin:'11:47', rosen:'天理', kitan:'12:20' },
-      doy:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:17', taikin:'11:22', rosen:'西大寺', kitan:'11:55' },
-      nch:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:17', taikin:'11:22', rosen:'西大寺', kitan:'11:55' } },
-    { dia:11, type:'公休', hei:null, doy:null, nch:null },
-    { dia:12, type:'',
-      hei:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:16', taikin:'14:34', rosen:'西大寺', kitan:'15:05' },
-      doy:{ type:'公休' },
-      nch:{ type:'公休' } },
-    { dia:13, type:'中間',
-      hei:{ okibo:'4:35', shukkin:'6:05', tochaku:'6:35', start:'7:05', taikin:'10:56', rosen:'山村', kitan:'11:30', okibo2:'14:35', shukkin2:'16:05', tochaku2:'16:35', start2:'17:05', taikin2:'21:59', kitan2:'22:30', rosen2:'シャープ' },
-      doy:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:22', taikin:'18:40', rosen:'イオン', kitan:'19:10' },
-      nch:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:22', taikin:'18:40', rosen:'イオン', kitan:'19:10' } },
-    { dia:14, type:'',
-      hei:{ okibo:'9:55', shukkin:'11:25', tochaku:'11:55', start:'12:29', taikin:'22:06', rosen:'イオン', kitan:'22:40' },
-      doy:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:22', taikin:'22:05', rosen:'イオン', kitan:'22:35' },
-      nch:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:22', taikin:'22:05', rosen:'イオン', kitan:'22:35' } },
-    { dia:15, type:'',
-      hei:{ okibo:'14:25', shukkin:'15:55', tochaku:'16:25', start:'16:58', taikin:'24:18', rosen:'シャープ', kitan:'24:50' },
-      doy:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:02', taikin:'23:04', rosen:'シャープ', kitan:'23:35' },
-      nch:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:02', taikin:'23:04', rosen:'シャープ', kitan:'23:35' } },
-    { dia:16, type:'公休', hei:null, doy:null, nch:null },
-    { dia:17, type:'公休', hei:null, doy:null, nch:null },
-    { dia:18, type:'',
-      hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:57', taikin:'18:38', rosen:'天理', kitan:'19:10' },
-      doy:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:07', rosen:'天理', kitan:'18:40' },
-      nch:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:07', rosen:'天理', kitan:'18:40' } },
-    { dia:19, type:'',
-      hei:{ okibo:'3:45', shukkin:'5:15', tochaku:'5:45', start:'6:19', taikin:'19:28', rosen:'阪奈', kitan:'20:00' },
-      doy:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'8:00', taikin:'19:29', rosen:'阪奈', kitan:'20:00' },
-      nch:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'8:00', taikin:'19:29', rosen:'阪奈', kitan:'20:00' } },
-    { dia:20, type:'',
-      hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:59', taikin:'19:05', rosen:'シャープ', kitan:'19:35' },
-      doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:13', taikin:'14:19', rosen:'シャープ', kitan:'14:50' },
-      nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:13', taikin:'14:19', rosen:'シャープ', kitan:'14:50' } },
-    { dia:21, type:'',
-      hei:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:14', taikin:'14:14', rosen:'西大寺', kitan:'14:45' },
-      doy:{ okibo:'2:25', shukkin:'3:55', tochaku:'4:25', start:'4:59', taikin:'11:49', rosen:'シャープ', kitan:'12:20' },
-      nch:{ okibo:'2:25', shukkin:'3:55', tochaku:'4:25', start:'4:59', taikin:'11:49', rosen:'シャープ', kitan:'12:20' } },
-    { dia:22, type:'公休', hei:null, doy:null, nch:null },
-    { dia:23, type:'中間',
-      hei:{ okibo:'2:50', shukkin:'4:20', tochaku:'4:50', start:'5:21', taikin:'8:10', rosen:'シャープ', kitan:'8:40', okibo2:'11:00', shukkin2:'12:30', tochaku2:'13:00', start2:'13:30', taikin2:'19:51', kitan2:'20:25', rosen2:'シャープ' },
-      doy:{ type:'公休' },
-      nch:{ type:'公休' } },
-    { dia:24, type:'',
-      hei:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:41', taikin:'19:15', rosen:'阪奈', kitan:'19:45' },
-      doy:{ okibo:'6:30', shukkin:'8:00', tochaku:'8:30', start:'9:00', taikin:'19:15', rosen:'阪奈', kitan:'19:45' },
-      nch:{ okibo:'6:30', shukkin:'8:00', tochaku:'8:30', start:'9:00', taikin:'19:15', rosen:'阪奈', kitan:'19:45' } },
-    { dia:25, type:'',
-      hei:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:40', taikin:'16:06', rosen:'天理', kitan:'16:40' },
-      doy:{ okibo:'5:20', shukkin:'6:50', tochaku:'7:20', start:'7:52', taikin:'16:55', rosen:'イオン', kitan:'17:25' },
-      nch:{ okibo:'5:20', shukkin:'6:50', tochaku:'7:20', start:'7:52', taikin:'16:55', rosen:'イオン', kitan:'17:25' } },
-    { dia:26, type:'手入',
-      hei:{ okibo:'3:05', shukkin:'4:35', tochaku:'5:05', start:'5:38', taikin:'14:50', rosen:'天理', kitan:'15:25' },
-      doy:{ okibo:'3:25', shukkin:'4:55', tochaku:'5:25', start:'5:59', taikin:'14:40', rosen:'シャープ', kitan:'15:10' },
-      nch:{ okibo:'3:25', shukkin:'4:55', tochaku:'5:25', start:'5:59', taikin:'14:40', rosen:'シャープ', kitan:'15:10' } },
-    { dia:27, type:'公休', hei:null, doy:null, nch:null },
-    { dia:28, type:'中間',
-      hei:{ okibo:'4:55', shukkin:'6:25', tochaku:'6:55', start:'7:25', taikin:'10:09', rosen:'シャープ', kitan:'10:40', okibo2:'14:00', shukkin2:'15:30', tochaku2:'16:00', start2:'16:30', taikin2:'21:41', kitan2:'22:15', rosen2:'天理' },
-      doy:{ type:'公休' },
-      nch:{ type:'公休' } },
-    { dia:29, type:'',
-      hei:{ okibo:'10:55', shukkin:'12:25', tochaku:'12:55', start:'13:28', taikin:'22:07', rosen:'西大寺', kitan:'22:40' },
-      doy:{ okibo:'10:45', shukkin:'12:15', tochaku:'12:45', start:'13:18', taikin:'20:43', rosen:'西大寺', kitan:'21:15' },
-      nch:{ okibo:'10:45', shukkin:'12:15', tochaku:'12:45', start:'13:18', taikin:'20:43', rosen:'西大寺', kitan:'21:15' } },
-    { dia:30, type:'',
-      hei:{ okibo:'15:00', shukkin:'16:30', tochaku:'17:00', start:'17:30', taikin:'24:41', rosen:'シャープ', kitan:'25:15' },
-      doy:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:20', taikin:'21:03', rosen:'シャープ', kitan:'21:35' },
-      nch:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:20', taikin:'21:03', rosen:'シャープ', kitan:'21:35' } },
-    { dia:31, type:'',
-      hei:{ okibo:'13:35', shukkin:'15:05', tochaku:'15:35', start:'16:08', taikin:'24:20', rosen:'天理', kitan:'24:55' },
-      doy:{ okibo:'13:55', shukkin:'15:25', tochaku:'15:55', start:'16:29', taikin:'24:19', rosen:'シャープ', kitan:'24:50' },
-      nch:{ okibo:'13:55', shukkin:'15:25', tochaku:'15:55', start:'16:29', taikin:'24:19', rosen:'シャープ', kitan:'24:50' } },
-    { dia:32, type:'公休', hei:null, doy:null, nch:null },
-    { dia:33, type:'公休', hei:null, doy:null, nch:null },
-    { dia:34, type:'中間',
-      hei:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'10:44', rosen:'天理', kitan:'11:15', okibo2:'13:50', shukkin2:'15:20', tochaku2:'15:50', start2:'16:20', taikin2:'21:28', kitan2:'22:00', rosen2:'西大寺' },
-      doy:{ okibo:'7:25', shukkin:'8:55', tochaku:'9:25', start:'9:59', taikin:'20:41', rosen:'天理', kitan:'21:15' },
-      nch:{ okibo:'7:25', shukkin:'8:55', tochaku:'9:25', start:'9:59', taikin:'20:41', rosen:'天理', kitan:'21:15' } },
-    { dia:35, type:'',
-      hei:{ okibo:'14:05', shukkin:'15:35', tochaku:'16:05', start:'16:35', taikin:'22:41', rosen:'シャープ', kitan:'23:15' },
-      doy:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:03', taikin:'23:03', rosen:'イオン', kitan:'23:35' },
-      nch:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:03', taikin:'23:03', rosen:'イオン', kitan:'23:35' } },
-    { dia:36, type:'',
-      hei:{ okibo:'13:05', shukkin:'14:35', tochaku:'15:05', start:'15:37', taikin:'22:43', rosen:'天理', kitan:'23:15' },
-      doy:{ okibo:'13:20', shukkin:'14:50', tochaku:'15:20', start:'15:54', taikin:'22:08', rosen:'天理', kitan:'22:40' },
-      nch:{ okibo:'13:20', shukkin:'14:50', tochaku:'15:20', start:'15:54', taikin:'22:08', rosen:'天理', kitan:'22:40' } },
-    { dia:37, type:'',
-      hei:{ okibo:'8:10', shukkin:'9:40', tochaku:'10:10', start:'10:42', taikin:'19:20', rosen:'シャープ', kitan:'19:50' },
-      doy:{ okibo:'9:30', shukkin:'11:00', tochaku:'11:30', start:'12:02', taikin:'20:23', rosen:'シャープ', kitan:'20:55' },
-      nch:{ okibo:'9:30', shukkin:'11:00', tochaku:'11:30', start:'12:02', taikin:'20:23', rosen:'シャープ', kitan:'20:55' } },
-    { dia:38, type:'公休', hei:null, doy:null, nch:null },
-    { dia:39, type:'',
-      hei:{ okibo:'4:30', shukkin:'6:00', tochaku:'6:30', start:'7:00', taikin:'19:26', rosen:'阪奈', kitan:'20:00' },
-      doy:{ okibo:'5:55', shukkin:'7:25', tochaku:'7:55', start:'8:28', taikin:'18:59', rosen:'阪奈', kitan:'19:30' },
-      nch:{ okibo:'5:55', shukkin:'7:25', tochaku:'7:55', start:'8:28', taikin:'18:59', rosen:'阪奈', kitan:'19:30' } },
-    { dia:40, type:'中間',
-      hei:{ okibo:'4:35', shukkin:'6:05', tochaku:'6:35', start:'7:09', taikin:'10:22', rosen:'シャープ', kitan:'10:55', okibo2:'13:40', shukkin2:'15:10', tochaku2:'15:40', start2:'16:10', taikin2:'22:08', kitan2:'22:40', rosen2:'天理' },
-      doy:{ okibo:'7:05', shukkin:'8:35', tochaku:'9:05', start:'9:37', taikin:'20:24', rosen:'イオン', kitan:'20:55' },
-      nch:{ okibo:'7:05', shukkin:'8:35', tochaku:'9:05', start:'9:37', taikin:'20:24', rosen:'イオン', kitan:'20:55' } },
-    { dia:41, type:'',
-      hei:{ okibo:'10:35', shukkin:'12:05', tochaku:'12:35', start:'13:09', taikin:'22:58', rosen:'イオン', kitan:'23:30' },
-      doy:{ okibo:'11:20', shukkin:'12:50', tochaku:'13:20', start:'13:53', taikin:'21:24', rosen:'山村・天理', kitan:'21:55' },
-      nch:{ okibo:'11:20', shukkin:'12:50', tochaku:'13:20', start:'13:53', taikin:'21:24', rosen:'山村・天理', kitan:'21:55' } },
-    { dia:42, type:'',
-      hei:{ okibo:'11:10', shukkin:'12:40', tochaku:'13:10', start:'13:42', taikin:'22:29', rosen:'シャープ', kitan:'23:00' },
-      doy:{ okibo:'10:30', shukkin:'12:00', tochaku:'12:30', start:'13:02', taikin:'22:43', rosen:'シャープ', kitan:'23:15' },
-      nch:{ okibo:'10:30', shukkin:'12:00', tochaku:'12:30', start:'13:02', taikin:'22:43', rosen:'シャープ', kitan:'23:15' } },
-    { dia:43, type:'公休', hei:null, doy:null, nch:null },
-    { dia:44, type:'',
-      hei:{ okibo:'13:00', shukkin:'14:30', tochaku:'15:00', start:'15:30', taikin:'22:18', rosen:'シャープ', kitan:'22:50' },
-      doy:{ type:'公休' },
-      nch:{ type:'公休' } },
-    { dia:45, type:'',
-      hei:{ okibo:'12:40', shukkin:'14:10', tochaku:'14:40', start:'15:12', taikin:'24:17', rosen:'イオン', kitan:'24:50' },
-      doy:{ okibo:'13:00', shukkin:'14:30', tochaku:'15:00', start:'15:32', taikin:'24:13', rosen:'イオン', kitan:'24:45' },
-      nch:{ okibo:'13:00', shukkin:'14:30', tochaku:'15:00', start:'15:32', taikin:'24:13', rosen:'イオン', kitan:'24:45' } },
-    { dia:46, type:'',
-      hei:{ okibo:'14:50', shukkin:'16:20', tochaku:'16:50', start:'17:24', taikin:'24:23', rosen:'天理', kitan:'24:55' },
-      doy:{ okibo:'14:50', shukkin:'16:20', tochaku:'16:50', start:'17:20', taikin:'23:34', rosen:'天理', kitan:'24:05' },
-      nch:{ okibo:'14:50', shukkin:'16:20', tochaku:'16:50', start:'17:20', taikin:'23:34', rosen:'天理', kitan:'24:05' } },
-    { dia:47, type:'',
-      hei:{ okibo:'13:10', shukkin:'14:40', tochaku:'15:10', start:'15:44', taikin:'23:52', rosen:'西大寺', kitan:'24:25' },
-      doy:{ okibo:'13:10', shukkin:'14:40', tochaku:'15:10', start:'15:44', taikin:'22:32', rosen:'西大寺', kitan:'23:05' },
-      nch:{ okibo:'13:10', shukkin:'14:40', tochaku:'15:10', start:'15:44', taikin:'22:32', rosen:'西大寺', kitan:'23:05' } },
-    { dia:48, type:'公休', hei:null, doy:null, nch:null },
-    { dia:49, type:'公休', hei:null, doy:null, nch:null },
-    { dia:50, type:'中間',
-      hei:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:09', taikin:'9:01', rosen:'シャープ', kitan:'9:35', okibo2:'14:00', shukkin2:'15:30', tochaku2:'16:00', start2:'16:32', taikin2:'19:54', kitan2:'20:25', rosen2:'シャープ' },
-      doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:10', taikin:'13:35', rosen:'シャープ', kitan:'14:05' },
-      nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:10', taikin:'13:35', rosen:'シャープ', kitan:'14:05' } },
-    { dia:51, type:'',
-      hei:{ okibo:'5:05', shukkin:'6:35', tochaku:'7:05', start:'7:36', taikin:'18:45', rosen:'阪奈', kitan:'19:15' },
-      doy:{ okibo:'6:00', shukkin:'7:30', tochaku:'8:00', start:'8:30', taikin:'18:45', rosen:'阪奈', kitan:'19:15' },
-      nch:{ okibo:'6:00', shukkin:'7:30', tochaku:'8:00', start:'8:30', taikin:'18:45', rosen:'阪奈', kitan:'19:15' } },
-    { dia:52, type:'',
-      hei:{ okibo:'3:55', shukkin:'5:25', tochaku:'5:55', start:'6:26', taikin:'19:42', rosen:'天理', kitan:'20:15' },
-      doy:{ okibo:'3:50', shukkin:'5:20', tochaku:'5:50', start:'6:21', taikin:'18:25', rosen:'天理', kitan:'18:55' },
-      nch:{ okibo:'3:50', shukkin:'5:20', tochaku:'5:50', start:'6:21', taikin:'18:25', rosen:'天理', kitan:'18:55' } },
-    { dia:53, type:'',
-      hei:{ okibo:'3:05', shukkin:'4:35', tochaku:'5:05', start:'5:38', taikin:'16:20', rosen:'山村', kitan:'16:50' },
-      doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:11', taikin:'13:29', rosen:'山村', kitan:'14:00' },
-      nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:11', taikin:'13:29', rosen:'山村', kitan:'14:00' } },
-    { dia:54, type:'公休', hei:null, doy:null, nch:null },
-    { dia:55, type:'中間',
-      hei:{ okibo:'3:30', shukkin:'5:00', tochaku:'5:30', start:'6:01', taikin:'9:27', rosen:'山村', kitan:'10:00', okibo2:'11:20', shukkin2:'12:50', tochaku2:'13:20', start2:'13:53', taikin2:'19:46', kitan2:'20:20', rosen2:'山村' },
-      doy:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:08', taikin:'13:51', rosen:'山村', kitan:'14:25' },
-      nch:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:08', taikin:'13:51', rosen:'山村', kitan:'14:25' } },
-    { dia:56, type:'',
-      hei:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:39', taikin:'18:00', rosen:'阪奈', kitan:'18:30' },
-      doy:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'18:00', rosen:'阪奈', kitan:'18:30' },
-      nch:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'18:00', rosen:'阪奈', kitan:'18:30' } },
-    { dia:57, type:'',
-      hei:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:45', taikin:'18:46', rosen:'西大寺', kitan:'19:20' },
-      doy:{ okibo:'5:50', shukkin:'7:20', tochaku:'7:50', start:'8:20', taikin:'18:45', rosen:'西大寺', kitan:'19:15' },
-      nch:{ okibo:'5:50', shukkin:'7:20', tochaku:'7:50', start:'8:20', taikin:'18:45', rosen:'西大寺', kitan:'19:15' } },
-    { dia:58, type:'公休', hei:null, doy:null, nch:null },
+    { dia:1, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:2, type:'', hei:{ okibo:'4:20', shukkin:'5:50', tochaku:'6:20', start:'6:54', taikin:'16:30', rosen:'イオン・都', kitan:'17:00' },
+                             doy:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:44', taikin:'14:20', rosen:'イオン', kitan:'14:50' },
+                             nch:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:44', taikin:'14:20', rosen:'イオン', kitan:'14:50' } },
+    { dia:3, type:'中間', hei:{ okibo:'3:55', shukkin:'5:25', tochaku:'5:55', start:'6:25', taikin:'9:07', rosen:'シャープ', kitan:'9:40',
+                                 okibo2:'13:35', shukkin2:'15:05', tochaku2:'15:35', start2:'16:05', taikin2:'21:01', kitan2:'21:35', rosen2:'' },
+                             doy:{ okibo:'6:20', shukkin:'7:50', tochaku:'8:20', start:'8:50', taikin:'19:43', rosen:'西大寺', kitan:'20:15' },
+                             nch:{ okibo:'6:20', shukkin:'7:50', tochaku:'8:20', start:'8:50', taikin:'19:43', rosen:'', kitan:'20:15' } },
+    { dia:4, type:'', hei:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:59', rosen:'都・ｲｵﾝ・ｼｬｰﾌﾟ', kitan:'19:30' },
+                             doy:{ okibo:'6:15', shukkin:'7:45', tochaku:'8:15', start:'8:49', taikin:'16:08', rosen:'イオン', kitan:'16:40' },
+                             nch:{ okibo:'6:15', shukkin:'7:45', tochaku:'8:15', start:'8:49', taikin:'16:08', rosen:'イオン', kitan:'16:40' } },
+    { dia:5, type:'', hei:{ okibo:'3:45', shukkin:'5:15', tochaku:'5:45', start:'6:19', taikin:'14:09', rosen:'シャープ', kitan:'14:40' },
+                             doy:{ okibo:'2:35', shukkin:'4:05', tochaku:'4:35', start:'5:07', taikin:'10:53', rosen:'天理', kitan:'11:25' },
+                             nch:{ okibo:'2:35', shukkin:'4:05', tochaku:'4:35', start:'5:07', taikin:'10:53', rosen:'天理', kitan:'11:25' } },
+    { dia:6, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:7, type:'予備', hei:{ yobi:true },
+                             doy:{ yobi:true },
+                             nch:{ yobi:true } },
+    { dia:8, type:'', hei:{ okibo:'4:30', shukkin:'6:00', tochaku:'6:30', start:'7:00', taikin:'19:37', rosen:'シャープ', kitan:'20:10' },
+                             doy:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:20', taikin:'19:43', rosen:'シャープ', kitan:'20:15' },
+                             nch:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:20', taikin:'19:43', rosen:'シャープ', kitan:'20:15' } },
+    { dia:9, type:'', hei:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'17:52', rosen:'西大寺', kitan:'18:25' },
+                             doy:{ okibo:'5:10', shukkin:'6:40', tochaku:'7:10', start:'7:42', taikin:'16:50', rosen:'西大寺', kitan:'17:20' },
+                             nch:{ okibo:'5:10', shukkin:'6:40', tochaku:'7:10', start:'7:42', taikin:'16:50', rosen:'西大寺', kitan:'17:20' } },
+    { dia:10, type:'手入', hei:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:19', taikin:'11:47', rosen:'天理', kitan:'12:20' },
+                             doy:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:17', taikin:'11:22', rosen:'西大寺', kitan:'11:55' },
+                             nch:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:17', taikin:'11:22', rosen:'西大寺', kitan:'11:55' } },
+    { dia:11, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:12, type:'', hei:{ okibo:'2:45', shukkin:'4:15', tochaku:'4:45', start:'5:16', taikin:'14:34', rosen:'西大寺', kitan:'15:05' },
+                             doy:{ type:'公休' },
+                             nch:{ type:'公休' } },
+    { dia:13, type:'中間', hei:{ okibo:'4:35', shukkin:'6:05', tochaku:'6:35', start:'7:05', taikin:'10:56', rosen:'山村', kitan:'11:30',
+                                 okibo2:'14:35', shukkin2:'16:05', tochaku2:'16:35', start2:'17:05', taikin2:'21:59', kitan2:'22:30', rosen2:'シャープ' },
+                             doy:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:22', taikin:'18:40', rosen:'イオン', kitan:'19:10' },
+                             nch:{ okibo:'6:50', shukkin:'8:20', tochaku:'8:50', start:'9:22', taikin:'18:40', rosen:'イオン', kitan:'19:10' } },
+    { dia:14, type:'', hei:{ okibo:'9:55', shukkin:'11:25', tochaku:'11:55', start:'12:29', taikin:'22:06', rosen:'イオン', kitan:'22:40' },
+                             doy:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:22', taikin:'22:05', rosen:'イオン', kitan:'22:35' },
+                             nch:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:22', taikin:'22:05', rosen:'イオン', kitan:'22:35' } },
+    { dia:15, type:'', hei:{ okibo:'14:25', shukkin:'15:55', tochaku:'16:25', start:'16:58', taikin:'24:18', rosen:'シャープ', kitan:'24:50' },
+                             doy:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:02', taikin:'23:04', rosen:'シャープ', kitan:'23:35' },
+                             nch:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:02', taikin:'23:04', rosen:'シャープ', kitan:'23:35' } },
+    { dia:16, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:17, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:18, type:'', hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:57', taikin:'18:38', rosen:'天理', kitan:'19:10' },
+                             doy:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:07', rosen:'天理', kitan:'18:40' },
+                             nch:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:07', rosen:'天理', kitan:'18:40' } },
+    { dia:19, type:'', hei:{ okibo:'3:45', shukkin:'5:15', tochaku:'5:45', start:'6:19', taikin:'19:28', rosen:'阪奈', kitan:'20:00' },
+                             doy:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'8:00', taikin:'19:29', rosen:'阪奈', kitan:'20:00' },
+                             nch:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'8:00', taikin:'19:29', rosen:'阪奈', kitan:'20:00' } },
+    { dia:20, type:'', hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:59', taikin:'19:05', rosen:'シャープ', kitan:'19:35' },
+                             doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:13', taikin:'14:19', rosen:'シャープ', kitan:'14:50' },
+                             nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:13', taikin:'14:19', rosen:'シャープ', kitan:'14:50' } },
+    { dia:21, type:'', hei:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:14', taikin:'14:14', rosen:'西大寺', kitan:'14:45' },
+                             doy:{ okibo:'2:25', shukkin:'3:55', tochaku:'4:25', start:'4:59', taikin:'11:49', rosen:'シャープ', kitan:'12:20' },
+                             nch:{ okibo:'2:25', shukkin:'3:55', tochaku:'4:25', start:'4:59', taikin:'11:49', rosen:'シャープ', kitan:'12:20' } },
+    { dia:22, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:23, type:'中間', hei:{ okibo:'2:50', shukkin:'4:20', tochaku:'4:50', start:'5:21', taikin:'8:10', rosen:'シャープ', kitan:'8:40',
+                                 okibo2:'11:00', shukkin2:'12:30', tochaku2:'13:00', start2:'13:30', taikin2:'19:51', kitan2:'20:25', rosen2:'シャープ' },
+                             doy:{ type:'公休' },
+                             nch:{ type:'公休' } },
+    { dia:24, type:'', hei:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:41', taikin:'19:15', rosen:'阪奈', kitan:'19:45' },
+                             doy:{ okibo:'6:30', shukkin:'8:00', tochaku:'8:30', start:'9:00', taikin:'19:15', rosen:'阪奈', kitan:'19:45' },
+                             nch:{ okibo:'6:30', shukkin:'8:00', tochaku:'8:30', start:'9:00', taikin:'19:15', rosen:'阪奈', kitan:'19:45' } },
+    { dia:25, type:'', hei:{ okibo:'4:10', shukkin:'5:40', tochaku:'6:10', start:'6:40', taikin:'16:06', rosen:'天理', kitan:'16:40' },
+                             doy:{ okibo:'5:20', shukkin:'6:50', tochaku:'7:20', start:'7:52', taikin:'16:55', rosen:'イオン', kitan:'17:25' },
+                             nch:{ okibo:'5:20', shukkin:'6:50', tochaku:'7:20', start:'7:52', taikin:'16:55', rosen:'イオン', kitan:'17:25' } },
+    { dia:26, type:'手入', hei:{ okibo:'3:05', shukkin:'4:35', tochaku:'5:05', start:'5:38', taikin:'14:50', rosen:'天理', kitan:'15:25' },
+                             doy:{ okibo:'3:25', shukkin:'4:55', tochaku:'5:25', start:'5:59', taikin:'14:40', rosen:'シャープ', kitan:'15:10' },
+                             nch:{ okibo:'3:25', shukkin:'4:55', tochaku:'5:25', start:'5:59', taikin:'14:40', rosen:'シャープ', kitan:'15:10' } },
+    { dia:27, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:28, type:'中間', hei:{ okibo:'4:55', shukkin:'6:25', tochaku:'6:55', start:'7:25', taikin:'10:09', rosen:'シャープ', kitan:'10:40',
+                                 okibo2:'14:00', shukkin2:'15:30', tochaku2:'16:00', start2:'16:30', taikin2:'21:41', kitan2:'22:15', rosen2:'天理' },
+                             doy:{ type:'公休' },
+                             nch:{ type:'公休' } },
+    { dia:29, type:'', hei:{ okibo:'10:55', shukkin:'12:25', tochaku:'12:55', start:'13:28', taikin:'22:07', rosen:'西大寺', kitan:'22:40' },
+                             doy:{ okibo:'10:45', shukkin:'12:15', tochaku:'12:45', start:'13:18', taikin:'20:43', rosen:'西大寺', kitan:'21:15' },
+                             nch:{ okibo:'10:45', shukkin:'12:15', tochaku:'12:45', start:'13:18', taikin:'20:43', rosen:'西大寺', kitan:'21:15' } },
+    { dia:30, type:'', hei:{ okibo:'15:00', shukkin:'16:30', tochaku:'17:00', start:'17:30', taikin:'24:41', rosen:'シャープ', kitan:'25:15' },
+                             doy:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:20', taikin:'21:03', rosen:'シャープ', kitan:'21:35' },
+                             nch:{ okibo:'9:50', shukkin:'11:20', tochaku:'11:50', start:'12:20', taikin:'21:03', rosen:'シャープ', kitan:'21:35' } },
+    { dia:31, type:'', hei:{ okibo:'13:35', shukkin:'15:05', tochaku:'15:35', start:'16:08', taikin:'24:20', rosen:'天理', kitan:'24:55' },
+                             doy:{ okibo:'13:55', shukkin:'15:25', tochaku:'15:55', start:'16:29', taikin:'24:19', rosen:'シャープ', kitan:'24:50' },
+                             nch:{ okibo:'13:55', shukkin:'15:25', tochaku:'15:55', start:'16:29', taikin:'24:19', rosen:'シャープ', kitan:'24:50' } },
+    { dia:32, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:33, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:34, type:'中間', hei:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'10:44', rosen:'天理', kitan:'11:15',
+                                 okibo2:'13:50', shukkin2:'15:20', tochaku2:'15:50', start2:'16:20', taikin2:'21:28', kitan2:'22:00', rosen2:'西大寺' },
+                             doy:{ okibo:'7:25', shukkin:'8:55', tochaku:'9:25', start:'9:59', taikin:'20:41', rosen:'天理', kitan:'21:15' },
+                             nch:{ okibo:'7:25', shukkin:'8:55', tochaku:'9:25', start:'9:59', taikin:'20:41', rosen:'天理', kitan:'21:15' } },
+    { dia:35, type:'', hei:{ okibo:'14:05', shukkin:'15:35', tochaku:'16:05', start:'16:35', taikin:'22:41', rosen:'シャープ', kitan:'23:15' },
+                             doy:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:03', taikin:'23:03', rosen:'イオン', kitan:'23:35' },
+                             nch:{ okibo:'11:30', shukkin:'13:00', tochaku:'13:30', start:'14:03', taikin:'23:03', rosen:'イオン', kitan:'23:35' } },
+    { dia:36, type:'', hei:{ okibo:'13:05', shukkin:'14:35', tochaku:'15:05', start:'15:37', taikin:'22:43', rosen:'天理', kitan:'23:15' },
+                             doy:{ okibo:'13:20', shukkin:'14:50', tochaku:'15:20', start:'15:54', taikin:'22:08', rosen:'天理', kitan:'22:40' },
+                             nch:{ okibo:'13:20', shukkin:'14:50', tochaku:'15:20', start:'15:54', taikin:'22:08', rosen:'天理', kitan:'22:40' } },
+    { dia:37, type:'', hei:{ okibo:'8:10', shukkin:'9:40', tochaku:'10:10', start:'10:42', taikin:'19:20', rosen:'シャープ', kitan:'19:50' },
+                             doy:{ okibo:'9:30', shukkin:'11:00', tochaku:'11:30', start:'12:02', taikin:'20:23', rosen:'シャープ', kitan:'20:55' },
+                             nch:{ okibo:'9:30', shukkin:'11:00', tochaku:'11:30', start:'12:02', taikin:'20:23', rosen:'シャープ', kitan:'20:55' } },
+    { dia:38, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:39, type:'', hei:{ okibo:'4:30', shukkin:'6:00', tochaku:'6:30', start:'7:00', taikin:'19:26', rosen:'阪奈', kitan:'20:00' },
+                             doy:{ okibo:'5:55', shukkin:'7:25', tochaku:'7:55', start:'8:28', taikin:'18:59', rosen:'阪奈', kitan:'19:30' },
+                             nch:{ okibo:'5:55', shukkin:'7:25', tochaku:'7:55', start:'8:28', taikin:'18:59', rosen:'阪奈', kitan:'19:30' } },
+    { dia:40, type:'中間', hei:{ okibo:'4:35', shukkin:'6:05', tochaku:'6:35', start:'7:09', taikin:'10:22', rosen:'シャープ', kitan:'10:55',
+                                 okibo2:'13:40', shukkin2:'15:10', tochaku2:'15:40', start2:'16:10', taikin2:'22:08', kitan2:'22:40', rosen2:'天理' },
+                             doy:{ okibo:'7:05', shukkin:'8:35', tochaku:'9:05', start:'9:37', taikin:'20:24', rosen:'イオン', kitan:'20:55' },
+                             nch:{ okibo:'7:05', shukkin:'8:35', tochaku:'9:05', start:'9:37', taikin:'20:24', rosen:'イオン', kitan:'20:55' } },
+    { dia:41, type:'', hei:{ okibo:'10:35', shukkin:'12:05', tochaku:'12:35', start:'13:09', taikin:'22:58', rosen:'イオン', kitan:'23:30' },
+                             doy:{ okibo:'11:20', shukkin:'12:50', tochaku:'13:20', start:'13:53', taikin:'21:24', rosen:'山村・天理', kitan:'21:55' },
+                             nch:{ okibo:'11:20', shukkin:'12:50', tochaku:'13:20', start:'13:53', taikin:'21:24', rosen:'山村・天理', kitan:'21:55' } },
+    { dia:42, type:'', hei:{ okibo:'11:10', shukkin:'12:40', tochaku:'13:10', start:'13:42', taikin:'22:29', rosen:'シャープ', kitan:'23:00' },
+                             doy:{ okibo:'10:30', shukkin:'12:00', tochaku:'12:30', start:'13:02', taikin:'22:43', rosen:'シャープ', kitan:'23:15' },
+                             nch:{ okibo:'10:30', shukkin:'12:00', tochaku:'12:30', start:'13:02', taikin:'22:43', rosen:'シャープ', kitan:'23:15' } },
+    { dia:43, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:44, type:'', hei:{ okibo:'13:00', shukkin:'14:30', tochaku:'15:00', start:'15:30', taikin:'22:18', rosen:'シャープ', kitan:'22:50' },
+                             doy:{ type:'公休' },
+                             nch:{ type:'公休' } },
+    { dia:45, type:'', hei:{ okibo:'12:40', shukkin:'14:10', tochaku:'14:40', start:'15:12', taikin:'24:17', rosen:'イオン', kitan:'24:50' },
+                             doy:{ okibo:'13:00', shukkin:'14:30', tochaku:'15:00', start:'15:32', taikin:'24:13', rosen:'イオン', kitan:'24:45' },
+                             nch:{ okibo:'13:00', shukkin:'14:30', tochaku:'15:00', start:'15:32', taikin:'24:13', rosen:'イオン', kitan:'24:45' } },
+    { dia:46, type:'', hei:{ okibo:'14:50', shukkin:'16:20', tochaku:'16:50', start:'17:24', taikin:'24:23', rosen:'天理', kitan:'24:55' },
+                             doy:{ okibo:'14:50', shukkin:'16:20', tochaku:'16:50', start:'17:20', taikin:'23:34', rosen:'天理', kitan:'24:05' },
+                             nch:{ okibo:'14:50', shukkin:'16:20', tochaku:'16:50', start:'17:20', taikin:'23:34', rosen:'天理', kitan:'24:05' } },
+    { dia:47, type:'', hei:{ okibo:'13:10', shukkin:'14:40', tochaku:'15:10', start:'15:44', taikin:'23:52', rosen:'西大寺', kitan:'24:25' },
+                             doy:{ okibo:'13:10', shukkin:'14:40', tochaku:'15:10', start:'15:44', taikin:'22:32', rosen:'西大寺', kitan:'23:05' },
+                             nch:{ okibo:'13:10', shukkin:'14:40', tochaku:'15:10', start:'15:44', taikin:'22:32', rosen:'西大寺', kitan:'23:05' } },
+    { dia:48, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:49, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:50, type:'中間', hei:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:09', taikin:'9:01', rosen:'シャープ', kitan:'9:35',
+                                 okibo2:'14:00', shukkin2:'15:30', tochaku2:'16:00', start2:'16:32', taikin2:'19:54', kitan2:'20:25', rosen2:'シャープ' },
+                             doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:10', taikin:'13:35', rosen:'シャープ', kitan:'14:05' },
+                             nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:10', taikin:'13:35', rosen:'シャープ', kitan:'14:05' } },
+    { dia:51, type:'', hei:{ okibo:'5:05', shukkin:'6:35', tochaku:'7:05', start:'7:36', taikin:'18:45', rosen:'阪奈', kitan:'19:15' },
+                             doy:{ okibo:'6:00', shukkin:'7:30', tochaku:'8:00', start:'8:30', taikin:'18:45', rosen:'阪奈', kitan:'19:15' },
+                             nch:{ okibo:'6:00', shukkin:'7:30', tochaku:'8:00', start:'8:30', taikin:'18:45', rosen:'阪奈', kitan:'19:15' } },
+    { dia:52, type:'', hei:{ okibo:'3:55', shukkin:'5:25', tochaku:'5:55', start:'6:26', taikin:'19:42', rosen:'天理', kitan:'20:15' },
+                             doy:{ okibo:'3:50', shukkin:'5:20', tochaku:'5:50', start:'6:21', taikin:'18:25', rosen:'天理', kitan:'18:55' },
+                             nch:{ okibo:'3:50', shukkin:'5:20', tochaku:'5:50', start:'6:21', taikin:'18:25', rosen:'天理', kitan:'18:55' } },
+    { dia:53, type:'', hei:{ okibo:'3:05', shukkin:'4:35', tochaku:'5:05', start:'5:38', taikin:'16:20', rosen:'山村', kitan:'16:50' },
+                             doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:11', taikin:'13:29', rosen:'山村', kitan:'14:00' },
+                             nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:11', taikin:'13:29', rosen:'山村', kitan:'14:00' } },
+    { dia:54, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
+    { dia:55, type:'中間', hei:{ okibo:'3:30', shukkin:'5:00', tochaku:'5:30', start:'6:01', taikin:'9:27', rosen:'山村', kitan:'10:00',
+                                 okibo2:'11:20', shukkin2:'12:50', tochaku2:'13:20', start2:'13:53', taikin2:'19:46', kitan2:'20:20', rosen2:'山村' },
+                             doy:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:08', taikin:'13:51', rosen:'山村', kitan:'14:25' },
+                             nch:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:08', taikin:'13:51', rosen:'山村', kitan:'14:25' } },
+    { dia:56, type:'', hei:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:39', taikin:'18:00', rosen:'阪奈', kitan:'18:30' },
+                             doy:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'18:00', rosen:'阪奈', kitan:'18:30' },
+                             nch:{ okibo:'4:05', shukkin:'5:35', tochaku:'6:05', start:'6:38', taikin:'18:00', rosen:'阪奈', kitan:'18:30' } },
+    { dia:57, type:'', hei:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:45', taikin:'18:46', rosen:'西大寺', kitan:'19:20' },
+                             doy:{ okibo:'5:50', shukkin:'7:20', tochaku:'7:50', start:'8:20', taikin:'18:45', rosen:'西大寺', kitan:'19:15' },
+                             nch:{ okibo:'5:50', shukkin:'7:20', tochaku:'7:50', start:'8:20', taikin:'18:45', rosen:'西大寺', kitan:'19:15' } },
+    { dia:58, type:'公休', hei:null,
+                             doy:null,
+                             nch:null },
 ];
 
 // ===== マスタデータ上書き管理 =====
@@ -1414,19 +1412,18 @@ const _ICHIRAN_DATA_ORIG = JSON.parse(JSON.stringify(ICHIRAN_DATA));
 
 const HOLIDAYS = new Set(["2024-01-01","2024-01-08","2024-02-11","2024-02-12","2024-02-23","2024-03-20","2024-04-29","2024-05-03","2024-05-04","2024-05-05","2024-05-06","2024-07-15","2024-08-11","2024-08-12","2024-09-16","2024-09-22","2024-09-23","2024-10-14","2024-11-03","2024-11-04","2024-11-23","2025-01-01","2025-01-13","2025-02-11","2025-02-23","2025-02-24","2025-03-20","2025-04-29","2025-05-03","2025-05-04","2025-05-05","2025-05-06","2025-07-21","2025-08-11","2025-09-15","2025-09-23","2025-10-13","2025-11-03","2025-11-23","2025-11-24","2026-01-01","2026-01-12","2026-02-11","2026-02-23","2026-03-20","2026-04-29","2026-05-03","2026-05-04","2026-05-05","2026-05-06","2026-07-20","2026-08-11","2026-09-21","2026-09-22","2026-09-23","2026-10-12","2026-11-03","2026-11-23","2027-01-01","2027-01-11","2027-02-11","2027-02-23","2027-03-20","2027-04-29","2027-05-03","2027-05-04","2027-05-05","2027-07-19","2027-08-11","2027-09-20","2027-09-23","2027-10-11","2027-11-03","2027-11-23"]);
 
-// ※改正版ごとに変更する唯一の箇所。同じGitHubアカウント配下（同一オリジン）に
-//   複数のBダイヤ改正アプリを置いても、localStorageの保存領域が絶対に混ざらないようにするための識別子。
-//   新しい改正アプリを作るたびに、ここだけ他と重複しない値に変更すること。
-const STORAGE_PREFIX = 'b202610_';
-function LK(key) { return STORAGE_PREFIX + key; }
-
 const BASE_DATE = new Date(2025, 0, 1);
 const DOWSTR = ['日','月','火','水','木','金','土'];
+
+// ===== ダイヤ改正アプリのデータ分離 =====
+// 改正のたびに一意な値へ変更する（他のどの改正アプリとも重複しないこと）。
+// 通常のメンテナンス編集では絶対に変更しないこと（既存データを見失うバグの原因になる）。
+const STORAGE_PREFIX = 'b202610_';
 
 // --- Settings (persisted in localStorage) ---
 // デフォルト値（キャッシュクリア時に使用）
 const DEFAULT_SETTINGS = {
-  baseDate: '2026-01-01',
+  baseDate: '2026-10-01',
   baseDia: 1,
   cycle: 58,
   wakeBeforeLeave:   0,
@@ -1465,13 +1462,13 @@ function isDefaultSettings(s) {
 
 function loadSettings() {
   try {
-    const s = localStorage.getItem(LK('shiftSettings'));
+    const s = localStorage.getItem(STORAGE_PREFIX+'shiftSettings');
     if (s) return JSON.parse(s);
   } catch(e) {}
   return Object.assign({}, DEFAULT_SETTINGS);
 }
 function saveSettings(s) {
-  try { localStorage.setItem(LK('shiftSettings'), JSON.stringify(s)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_PREFIX+'shiftSettings', JSON.stringify(s)); } catch(e) {}
 }
 
 let SETTINGS = loadSettings();
@@ -1517,31 +1514,31 @@ function getDayType(date) {
 
 // スポット上書き: { "2026-05-13": 5, ... }
 let DIA_OVERRIDES = {};
-try { DIA_OVERRIDES = JSON.parse(localStorage.getItem(LK('diaOverrides')) || '{}'); } catch(e) {}
+try { DIA_OVERRIDES = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'diaOverrides') || '{}'); } catch(e) {}
 
 // 出勤時間臨時変更: key="YYYY-MM-DD_shiftIndex" → 分数
 let SHUKKIN_OVERRIDES = {};
-try { SHUKKIN_OVERRIDES = JSON.parse(localStorage.getItem(LK('shukkinOverrides')) || '{}'); } catch(e) {}
+try { SHUKKIN_OVERRIDES = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'shukkinOverrides') || '{}'); } catch(e) {}
 function saveShukkinOverrides() {
-  try { localStorage.setItem(LK('shukkinOverrides'), JSON.stringify(SHUKKIN_OVERRIDES)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_PREFIX+'shukkinOverrides', JSON.stringify(SHUKKIN_OVERRIDES)); } catch(e) {}
 }
 
 // 退勤時間臨時変更: key="YYYY-MM-DD_shiftIndex" → 分数
 let TAIKIN_OVERRIDES = {};
-try { TAIKIN_OVERRIDES = JSON.parse(localStorage.getItem(LK('taikinOverrides')) || '{}'); } catch(e) {}
+try { TAIKIN_OVERRIDES = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'taikinOverrides') || '{}'); } catch(e) {}
 function saveTaikinOverrides() {
-  try { localStorage.setItem(LK('taikinOverrides'), JSON.stringify(TAIKIN_OVERRIDES)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_PREFIX+'taikinOverrides', JSON.stringify(TAIKIN_OVERRIDES)); } catch(e) {}
 }
 
 function saveDiaOverrides() {
-  try { localStorage.setItem(LK('diaOverrides'), JSON.stringify(DIA_OVERRIDES)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_PREFIX+'diaOverrides', JSON.stringify(DIA_OVERRIDES)); } catch(e) {}
 }
 
 // 年休・指定公休（その日だけのフラグ。ダイヤ番号自体は変更しない）: { "2026-06-20": "年休"|"指定公休" }
 let SPECIAL_DAY_OVERRIDES = {};
-try { SPECIAL_DAY_OVERRIDES = JSON.parse(localStorage.getItem(LK('specialDayOverrides')) || '{}'); } catch(e) {}
+try { SPECIAL_DAY_OVERRIDES = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'specialDayOverrides') || '{}'); } catch(e) {}
 function saveSpecialDayOverrides() {
-  try { localStorage.setItem(LK('specialDayOverrides'), JSON.stringify(SPECIAL_DAY_OVERRIDES)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_PREFIX+'specialDayOverrides', JSON.stringify(SPECIAL_DAY_OVERRIDES)); } catch(e) {}
 }
 
 // ダイヤ番号の変更（スポット変更／臨時ダイヤ／年休・指定公休）は最優先。
@@ -2747,7 +2744,7 @@ let _pwCallback = null;  // 認証成功時のコールバック
 let _pwCancel = null;    // 取消時のコールバック
 
 function getAppPassword() {
-  return localStorage.getItem(LK('appPassword')) || '0924';
+  return localStorage.getItem(STORAGE_PREFIX+'appPassword') || '0924';
 }
 
 let _pwSessionKey = null;
@@ -2812,9 +2809,9 @@ function pwCancel() {
 
 // ========== マスタデータ編集 ==========
 let MASTER_OVERRIDES = {};
-try { MASTER_OVERRIDES = JSON.parse(localStorage.getItem(LK('masterOverrides')) || '{}'); } catch(e) {}
+try { MASTER_OVERRIDES = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'masterOverrides') || '{}'); } catch(e) {}
 function saveMasterOverrides() {
-  try { localStorage.setItem(LK('masterOverrides'), JSON.stringify(MASTER_OVERRIDES)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_PREFIX+'masterOverrides', JSON.stringify(MASTER_OVERRIDES)); } catch(e) {}
 }
 
 // ===== 手入フラグ管理 =====
@@ -3237,7 +3234,7 @@ function masterInitCancel() {
 }
 function masterInitExecute() {
   // masterOverridesをlocalStorageから完全削除
-  localStorage.removeItem(LK('masterOverrides'));
+  localStorage.removeItem('masterOverrides');
   MASTER_OVERRIDES = {};
   // ICHIRAN_DATAを元データに完全リセット
   applyMasterOverrides();
@@ -3270,13 +3267,13 @@ function masterResetAllExecute() {
   const backupData = {
     version: 1,
     savedAt: now.toISOString(),
-    shiftSettings:       localStorage.getItem(LK('shiftSettings'))       || null,
-    diaOverrides:        localStorage.getItem(LK('diaOverrides'))        || null,
-    shukkinOverrides:    localStorage.getItem(LK('shukkinOverrides'))    || null,
-    taikinOverrides:     localStorage.getItem(LK('taikinOverrides'))     || null,
-    specialDayOverrides: localStorage.getItem(LK('specialDayOverrides')) || null,
-    masterOverrides:     localStorage.getItem(LK('masterOverrides'))     || null,
-    warningSuppressed:   localStorage.getItem(LK('warningSuppressed'))   || null,
+    shiftSettings:       localStorage.getItem(STORAGE_PREFIX+'shiftSettings')       || null,
+    diaOverrides:        localStorage.getItem(STORAGE_PREFIX+'diaOverrides')        || null,
+    shukkinOverrides:    localStorage.getItem(STORAGE_PREFIX+'shukkinOverrides')    || null,
+    taikinOverrides:     localStorage.getItem(STORAGE_PREFIX+'taikinOverrides')     || null,
+    specialDayOverrides: localStorage.getItem(STORAGE_PREFIX+'specialDayOverrides') || null,
+    masterOverrides:     localStorage.getItem(STORAGE_PREFIX+'masterOverrides')     || null,
+    warningSuppressed:   localStorage.getItem(STORAGE_PREFIX+'warningSuppressed')   || null,
   };
   const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -3348,13 +3345,13 @@ async function doExport() {
     version: 1,
     appId: STORAGE_PREFIX,
     savedAt: now.toISOString(),
-    shiftSettings:       localStorage.getItem(LK('shiftSettings'))       || null,
-    diaOverrides:        localStorage.getItem(LK('diaOverrides'))        || null,
-    shukkinOverrides:    localStorage.getItem(LK('shukkinOverrides'))    || null,
-    taikinOverrides:     localStorage.getItem(LK('taikinOverrides'))     || null,
-    specialDayOverrides: localStorage.getItem(LK('specialDayOverrides')) || null,
-    warningSuppressed:   localStorage.getItem(LK('warningSuppressed'))   || null,
-    masterOverrides:     localStorage.getItem(LK('masterOverrides'))     || null,
+    shiftSettings:       localStorage.getItem(STORAGE_PREFIX+'shiftSettings')       || null,
+    diaOverrides:        localStorage.getItem(STORAGE_PREFIX+'diaOverrides')        || null,
+    shukkinOverrides:    localStorage.getItem(STORAGE_PREFIX+'shukkinOverrides')    || null,
+    taikinOverrides:     localStorage.getItem(STORAGE_PREFIX+'taikinOverrides')     || null,
+    specialDayOverrides: localStorage.getItem(STORAGE_PREFIX+'specialDayOverrides') || null,
+    warningSuppressed:   localStorage.getItem(STORAGE_PREFIX+'warningSuppressed')   || null,
+    masterOverrides:     localStorage.getItem(STORAGE_PREFIX+'masterOverrides')     || null,
   };
   const json = JSON.stringify(appData, null, 2);
 
@@ -3422,34 +3419,27 @@ async function loadAppFromFile() {
 function _applyImport(text, fname) {
   try {
     const data = JSON.parse(text);
-
-    // 別のダイヤ改正版（別アプリ）のバックアップ、またはappIdの無い古い形式は
-    // 一切読み込ませない（ダイヤ番号の意味が違うため、混乱を招くだけで良いことがない）。
+    // 別改正版のバックアップ、またはappIdの無い古い形式は問答無用でブロック（抜け道は用意しない）
     if (data.appId !== STORAGE_PREFIX) {
-      alert(
-        '⚠️ このバックアップは、今のアプリとは別のダイヤ改正版（またはそれ以前の形式）のデータです。\n' +
-        'ダイヤ番号の意味が異なるため、このアプリには読み込めません。\n\n' +
-        '改正前のデータを確認したい場合は、そのデータを保存したときに使っていたアプリ（旧URL）の方で開いてください。'
-      );
+      alert('⚠️ このバックアップは今のアプリのデータではないため読み込めません。\n（別の改正版アプリ、または旧形式のバックアップの可能性があります）\n改正前のデータを確認したい場合は、保存時に使っていたアプリを開いてください。');
       return;
     }
-
-    if (data.shiftSettings)     localStorage.setItem(LK('shiftSettings'),     data.shiftSettings);
-    if (data.diaOverrides)      localStorage.setItem(LK('diaOverrides'),      data.diaOverrides);
-    if (data.shukkinOverrides)  localStorage.setItem(LK('shukkinOverrides'),  data.shukkinOverrides);
-    if (data.warningSuppressed) localStorage.setItem(LK('warningSuppressed'), data.warningSuppressed);
+    if (data.shiftSettings)     localStorage.setItem(STORAGE_PREFIX+'shiftSettings',     data.shiftSettings);
+    if (data.diaOverrides)      localStorage.setItem(STORAGE_PREFIX+'diaOverrides',      data.diaOverrides);
+    if (data.shukkinOverrides)  localStorage.setItem(STORAGE_PREFIX+'shukkinOverrides',  data.shukkinOverrides);
+    if (data.warningSuppressed) localStorage.setItem(STORAGE_PREFIX+'warningSuppressed', data.warningSuppressed);
     // masterOverrides: null でも '{}' で上書きしてリセット状態を確実に反映
-    localStorage.setItem(LK('masterOverrides'), data.masterOverrides || '{}');
-    localStorage.setItem(LK('taikinOverrides'), data.taikinOverrides || '{}');
-    localStorage.setItem(LK('specialDayOverrides'), data.specialDayOverrides || '{}');
+    localStorage.setItem(STORAGE_PREFIX+'masterOverrides', data.masterOverrides || '{}');
+    localStorage.setItem(STORAGE_PREFIX+'taikinOverrides', data.taikinOverrides || '{}');
+    localStorage.setItem(STORAGE_PREFIX+'specialDayOverrides', data.specialDayOverrides || '{}');
 
     // データ再読み込み
     SETTINGS = loadSettings();
-    try { DIA_OVERRIDES        = JSON.parse(localStorage.getItem(LK('diaOverrides')) || '{}'); } catch(e) { DIA_OVERRIDES = {}; }
-    try { SHUKKIN_OVERRIDES    = JSON.parse(localStorage.getItem(LK('shukkinOverrides')) || '{}'); } catch(e) { SHUKKIN_OVERRIDES = {}; }
-    try { MASTER_OVERRIDES     = JSON.parse(localStorage.getItem(LK('masterOverrides')) || '{}'); } catch(e) { MASTER_OVERRIDES = {}; }
-    try { TAIKIN_OVERRIDES     = JSON.parse(localStorage.getItem(LK('taikinOverrides')) || '{}'); } catch(e) { TAIKIN_OVERRIDES = {}; }
-    try { SPECIAL_DAY_OVERRIDES = JSON.parse(localStorage.getItem(LK('specialDayOverrides')) || '{}'); } catch(e) { SPECIAL_DAY_OVERRIDES = {}; }
+    try { DIA_OVERRIDES        = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'diaOverrides') || '{}'); } catch(e) { DIA_OVERRIDES = {}; }
+    try { SHUKKIN_OVERRIDES    = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'shukkinOverrides') || '{}'); } catch(e) { SHUKKIN_OVERRIDES = {}; }
+    try { MASTER_OVERRIDES     = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'masterOverrides') || '{}'); } catch(e) { MASTER_OVERRIDES = {}; }
+    try { TAIKIN_OVERRIDES     = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'taikinOverrides') || '{}'); } catch(e) { TAIKIN_OVERRIDES = {}; }
+    try { SPECIAL_DAY_OVERRIDES = JSON.parse(localStorage.getItem(STORAGE_PREFIX+'specialDayOverrides') || '{}'); } catch(e) { SPECIAL_DAY_OVERRIDES = {}; }
     applyMasterOverrides();
     if (currentView === 'calendar') renderCalendarTab();
     if (currentView === 'ichiran') renderIchiran();
@@ -4651,7 +4641,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20260724-003';
+const APP_VERSION = '20260725-001';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
@@ -4676,7 +4666,7 @@ if ('serviceWorker' in navigator) {
   });
 
   // バージョン変更検知：古いキャッシュなら全削除してリロード
-  const VER_KEY = LK('appVersion');
+  const VER_KEY = STORAGE_PREFIX+'appVersion';
   const storedVer = localStorage.getItem(VER_KEY);
   if (storedVer && storedVer !== APP_VERSION) {
     localStorage.setItem(VER_KEY, APP_VERSION);
