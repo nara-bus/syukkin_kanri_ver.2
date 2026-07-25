@@ -1,7 +1,7 @@
 {
-  "name": "出勤時間管理",
-  "short_name": "出勤管理",
-  "description": "シフト勤務の出勤時間管理アプリ",
+  "name": "出勤時間管理ver.2",
+  "short_name": "出勤管理ver.2",
+  "description": "シフト勤務の出勤時間管理アプリ（2026年10月ダイヤ改正版）",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
