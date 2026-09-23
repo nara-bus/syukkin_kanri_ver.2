@@ -10,7 +10,7 @@
   gtag('config', 'G-GLR9FB8Q9E');
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
 <title>出勤時間管理</title>
 <meta name="description" content="シフト勤務の出勤時間管理アプリ">
 <meta name="theme-color" content="#3d9e6e">
@@ -24,6 +24,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html {
+    touch-action: manipulation; /* ダブルタップ拡大だけ無効化（ピンチは有効） */
     overscroll-behavior: none;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -66,6 +67,21 @@
     margin-bottom: 2px;
   }
   .header-date { font-size: 15px; font-weight: 600; color: #5a8f78; }
+  /* ピンチ拡大中は毎フレームのぼかし再描画が重いので切る（背景はほぼ不透明なので見た目はほぼ同じ） */
+  html.is-zoomed .header,
+  html.is-zoomed .tab-bar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* カレンダー上：縦スクロールとピンチはブラウザ任せ、横ドラッグだけ月スワイプ(JS)で使う。
+     こう宣言しておけば touchmove をpassiveにでき、ピンチ中にブラウザがJSの応答待ちをしなくなる。 */
+  #view-calendar { touch-action: pan-y pinch-zoom; }
+  html.is-zoomed #view-calendar { touch-action: auto; } /* 拡大中は上下左右どちらにも動かせるように */
+  /* 拡大中だけの軽量表示（元のサイズに戻れば自動で通常表示に戻る） */
+  html.is-zoomed #cal-panel-prev,
+  html.is-zoomed #cal-panel-next { visibility: hidden; }           /* 拡大中は月スワイプ無効なので前後の月は描かない */
+  html.is-zoomed .cal-cell { transition: none !important; }
+  html.is-zoomed .cal-slider-track { will-change: auto; }          /* 拡大時のぼやけ・メモリ消費を避ける */
   .header-time {
     font-size: 20px;
     font-weight: 800;
@@ -1265,6 +1281,10 @@
     flex-direction: column;
     height: 287mm; /* A4縦(297mm) - 上下マージン(5mm×2) */
   }
+  #print-calendar-area .print-cal-page:not(:last-child) {
+    break-after: page;
+    page-break-after: always;
+  }
   #print-calendar-area .print-cal-title {
     flex: 0 0 auto;
     text-align: center;
@@ -1424,7 +1444,7 @@
         </svg>
         読込
       </button>
-      <button class="hdr-btn hdr-btn-print" id="btn-print" title="表示中の月を印刷" onclick="printCalendarMonth()">
+      <button class="hdr-btn hdr-btn-print" id="btn-print" title="期間を指定して印刷" onclick="openXlsxRangeModal('print')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="pointer-events:none">
           <polyline points="6 9 6 2 18 2 18 9"/>
           <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
@@ -2215,12 +2235,12 @@ function renderCalendarTab() {
       .cal-slider-viewport { overflow:hidden; position:relative; }
       .cal-slider-track { display:flex; align-items:flex-start; gap:20px; will-change:transform; }
       .cal-panel { flex:0 0 auto; box-sizing:border-box; padding:0 0 24px; display:grid; grid-template-columns:repeat(7,1fr); grid-auto-rows:clamp(70px, calc(21px + 16vw), 90px); gap:2px; }
-      .cal-cell { border-radius:9px; background:#ffffff; min-height:0; height:100%; overflow:hidden; box-sizing:border-box; padding:4px 3px; position:relative; border:1px solid rgba(100,180,140,0.28); border-bottom:3px solid rgba(70,135,98,0.42); box-shadow:0 5px 0 rgba(80,140,105,0.28), 0 7px 16px rgba(50,100,75,0.16), inset 0 1.5px 0 rgba(255,255,255,0.95), inset 0 -1px 2px rgba(80,140,105,0.10); transition: transform 0.18s ease, box-shadow 0.18s ease; }
+      .cal-cell { border-radius:9px; background:#ffffff; min-height:0; height:100%; overflow:hidden; box-sizing:border-box; padding:4px 3px; position:relative; border:1px solid rgba(100,180,140,0.28); border-bottom:3px solid rgba(70,135,98,0.42); box-shadow:none; transition: transform 0.18s ease, box-shadow 0.18s ease; }
       .cal-cell.cal-cell-pressed { transform: translateY(4px) scale(0.97); box-shadow: inset 0 3px 6px rgba(50,90,70,0.32), inset 0 1px 3px rgba(0,0,0,0.16); border-bottom-width: 1px; transition: transform 0.05s ease, box-shadow 0.05s ease; }
       .cal-cell-empty { background:transparent; box-shadow:none; border:none; }
       .cal-cell.doy { background:#dcecfa; }
       .cal-cell.nch { background:#fadede; }
-      .cal-cell-today { border-color:#cc80ff; border-bottom-color:#cc80ff; box-shadow:0 5px 0 rgba(80,140,105,0.28), 0 7px 16px rgba(50,100,75,0.16), inset 0 0 0 1.5px #cc80ff; }
+      .cal-cell-today { border-color:#cc80ff; border-bottom-color:#cc80ff; box-shadow:inset 0 0 0 1.5px #cc80ff; }
       .cal-cell-date { font-size:clamp(12px, 4vw, 16px); font-weight:700; color:#666; display:flex; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:2px; overflow:hidden; }
       .cal-cell-type-badge { font-size:clamp(7px, 2.2vw, 9px); font-weight:700; padding:clamp(0px,0.3vw,1px) clamp(2px,1vw,4px); border-radius:99px; white-space:nowrap; }
       .cal-cell-ng-icon { font-size:10px; vertical-align:middle; }
@@ -2455,30 +2475,30 @@ function _printBuildMonthGridHTML(monthDate) {
   return { cells, rows: PRINT_CAL_FIXED_ROWS };
 }
 
-// 表示中の月をA4縦向けで印刷する（手書き記入欄付き）
-function printCalendarMonth() {
+// 指定した期間（開始年月〜終了年月）をA4縦向けで1ヶ月1ページずつ印刷する（手書き記入欄付き）
+function printCalendarRange(sy, sm, ey, em) {
   const printArea = document.getElementById('print-calendar-area');
   if (!printArea) return;
-
-  const curDate = new Date(_calTabDate);
-  const y = curDate.getFullYear();
-  const m = curDate.getMonth(); // 0-11
-  const monthLabel = `${y}年${m + 1}月`;
 
   const dowLabels = ['月','火','水','木','金','土','日'];
   const dowHeaderHtml = dowLabels.map((l, i) =>
     `<div class="print-cal-dow-label${i===6?' nch':''}${i===5?' doy':''}">${l}</div>`
   ).join('');
 
-  const { cells: cellsHtml, rows } = _printBuildMonthGridHTML(curDate);
-
-  printArea.innerHTML = `
+  const total = (ey - sy) * 12 + (em - sm) + 1;
+  let pagesHtml = '';
+  for (let i = 0; i < total; i++) {
+    const monthDate = new Date(sy, sm - 1 + i, 1);
+    const monthLabel = `${monthDate.getFullYear()}年${monthDate.getMonth() + 1}月`;
+    const { cells: cellsHtml, rows } = _printBuildMonthGridHTML(monthDate);
+    pagesHtml += `
     <div class="print-cal-page">
       <div class="print-cal-title">${monthLabel}</div>
       <div class="print-cal-dow-row">${dowHeaderHtml}</div>
       <div class="print-cal-grid" style="--rows:${rows}">${cellsHtml}</div>
-    </div>
-  `;
+    </div>`;
+  }
+  printArea.innerHTML = pagesHtml;
 
   // 印刷用CSS(mm基準)は画面上でも同じ寸法になるよう .pc-active で有効化しているので、
   // ここで実際にレイアウトさせてから「中間ダイヤの1行表示」がセル幅に収まるか測定する。
@@ -2522,9 +2542,14 @@ window.addEventListener('afterprint', () => {
 // ============================================================
 // エクセル出力機能（期間指定でGoogleカレンダー用データを書き出す）
 // ============================================================
-function openXlsxRangeModal() {
+let _rangeMode = 'xlsx'; // 'xlsx' | 'print'
+const PRINT_MAX_MONTHS = 6;
+function openXlsxRangeModal(mode) {
   const overlay = document.getElementById('xlsx-range-overlay');
   if (!overlay) return;
+  _rangeMode = mode === 'print' ? 'print' : 'xlsx';
+  document.getElementById('xlsx-range-title').textContent = _rangeMode === 'print' ? '期間を指定して印刷' : '期間を指定してエクセル出力';
+  document.getElementById('xlsx-range-ok').textContent = _rangeMode === 'print' ? '印刷する' : '出力する';
 
   const now = new Date(_calTabDate);
   const curY = now.getFullYear(), curM = now.getMonth() + 1;
@@ -2613,7 +2638,26 @@ function _xlsxBuildRows(startDate, endDate) {
   return rows;
 }
 
+function _confirmPrintRange() {
+  const sy = parseInt(document.getElementById('xlsx-start-y').value, 10);
+  const sm = parseInt(document.getElementById('xlsx-start-m').value, 10);
+  const ey = parseInt(document.getElementById('xlsx-end-y').value, 10);
+  const em = parseInt(document.getElementById('xlsx-end-m').value, 10);
+  const total = (ey - sy) * 12 + (em - sm) + 1;
+  if (total < 1) {
+    alert('⚠️ 開始年月が終了年月より後になっています');
+    return;
+  }
+  if (total > PRINT_MAX_MONTHS) {
+    alert(`⚠️ 印刷は${PRINT_MAX_MONTHS}ヶ月までです（現在${total}ヶ月）`);
+    return;
+  }
+  closeXlsxRangeModal();
+  printCalendarRange(sy, sm, ey, em);
+}
+
 function confirmXlsxExport() {
+  if (_rangeMode === 'print') { _confirmPrintRange(); return; }
   if (!window.XLSX) {
     alert('⚠️ エクセル出力ライブラリの読み込みに失敗しました。通信環境を確認してもう一度お試しください。');
     return;
@@ -4353,7 +4397,13 @@ switchTab('calendar');
 // 反映が追いつかない・ズレることがあるため、JSでvisualViewportを実測して直接同期する。
 (function() {
   function syncAppHeight() {
-    const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    const vv = window.visualViewport;
+    const zoomed = !!(vv && vv.scale > 1.01);
+    document.documentElement.classList.toggle('is-zoomed', zoomed);
+    // ピンチ拡大中は高さを更新しない（毎フレーム再レイアウトしてカクつくため）。
+    // 元のサイズに戻った時のイベントで、通常どおり実測値に同期される。
+    if (zoomed) return;
+    const h = vv ? vv.height : window.innerHeight;
     document.documentElement.style.setProperty('--app-height', h + 'px');
   }
   syncAppHeight();
@@ -4384,6 +4434,10 @@ switchTab('calendar');
     const overlay = document.getElementById('cal-day-card-overlay');
     return overlay && !overlay.classList.contains('hidden');
   }
+  // ピンチ拡大中は1本指ドラッグが「画面の移動」になるので、月スワイプは止める
+  function isZoomed() {
+    return !!(window.visualViewport && window.visualViewport.scale > 1.01);
+  }
   function getTrack() { return document.getElementById('cal-slider-track'); }
   function getViewport() { return document.getElementById('cal-slider-viewport'); }
 
@@ -4396,7 +4450,7 @@ switchTab('calendar');
   }
 
   el.addEventListener('touchstart', function(e) {
-    if (sliding || isCardOpen()) { axis = null; return; }
+    if (sliding || isCardOpen() || isZoomed()) { axis = null; return; }
     const t = e.touches[0];
     startX = lastX = t.clientX;
     startY = t.clientY;
@@ -4411,7 +4465,8 @@ switchTab('calendar');
   }, { passive: true });
 
   el.addEventListener('touchmove', function(e) {
-    if (sliding || isCardOpen()) return;
+    if (sliding || isCardOpen() || isZoomed()) return;
+    if (e.touches.length > 1) { if (axis !== 'h') axis = 'p'; return; } // 2本指(ピンチ)は月スワイプにしない
 
     const t = e.touches[0];
     const dx = t.clientX - startX;
@@ -4423,8 +4478,6 @@ switchTab('calendar');
     }
     if (axis !== 'h') return; // 縦スクロールの可能性がある間はブラウザ標準動作に任せる
 
-    e.preventDefault(); // 横ドラッグ確定後はページの縦バウンス等を抑止
-
     let clamped = dx;
     if (clamped > pitch0) clamped = pitch0;
     if (clamped < -pitch0) clamped = -pitch0;
@@ -4435,10 +4488,10 @@ switchTab('calendar');
 
     lastX = t.clientX;
     lastTime = Date.now();
-  }, { passive: false });
+  }, { passive: true }); // touch-action:pan-y で横のブラウザ動作は無効化済みなのでpreventDefault不要
 
   el.addEventListener('touchend', function(e) {
-    if (sliding || isCardOpen()) { axis = null; return; }
+    if (sliding || isCardOpen() || isZoomed()) { axis = null; return; }
     if (axis !== 'h') { axis = null; return; } // ドラッグしてなければ通常のタップとして処理させる
 
     if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
@@ -5204,7 +5257,7 @@ setInterval(updateClock, 30000);
 <div id="xlsx-range-overlay" class="alert-overlay hidden">
   <div class="alert-box" style="width:280px">
     <div class="alert-icon">📊</div>
-    <div class="alert-title" style="color:#2d6e30">期間を指定してエクセル出力</div>
+    <div class="alert-title" id="xlsx-range-title" style="color:#2d6e30">期間を指定してエクセル出力</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:10px;font-size:13px;font-weight:700;color:#2d5a47">
       <select id="xlsx-start-y" style="font-size:13px;font-weight:700;color:#2d5a47;background:linear-gradient(170deg,#e8f5ee,#d4ede0);border:1px solid rgba(80,160,120,0.45);border-bottom:2px solid rgba(60,130,95,0.5);border-radius:8px;padding:5px 4px;font-family:inherit"></select>年
       <select id="xlsx-start-m" style="font-size:13px;font-weight:700;color:#2d5a47;background:linear-gradient(170deg,#e8f5ee,#d4ede0);border:1px solid rgba(80,160,120,0.45);border-bottom:2px solid rgba(60,130,95,0.5);border-radius:8px;padding:5px 4px;font-family:inherit"></select>月
@@ -5216,7 +5269,7 @@ setInterval(updateClock, 30000);
     </div>
     <div style="display:flex;gap:8px">
       <button class="alert-ok" style="background:#9aa5a0" onclick="closeXlsxRangeModal()">キャンセル</button>
-      <button class="alert-ok" onclick="confirmXlsxExport()">出力する</button>
+      <button class="alert-ok" id="xlsx-range-ok" onclick="confirmXlsxExport()">出力する</button>
     </div>
   </div>
 </div>
@@ -5356,7 +5409,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20260924-001';
+const APP_VERSION = '20260924-008';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
