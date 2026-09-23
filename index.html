@@ -1494,7 +1494,7 @@ const ICHIRAN_DATA = [
     { dia:17, type:'', hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:57', taikin:'18:38', rosen:'天理', kitan:'19:10' },
                              doy:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:07', rosen:'天理', kitan:'18:40' }, nch:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'18:07', rosen:'天理', kitan:'18:40' } },
     { dia:18, type:'', hei:{ okibo:'3:35', shukkin:'5:05', tochaku:'5:35', start:'6:09', taikin:'19:28', rosen:'阪奈', kitan:'20:00' },
-                             doy:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'7:57', taikin:'19:29', rosen:'阪奈', kitan:'20:00' }, nch:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'7:57', taikin:'19:29', rosen:'阪奈', kitan:'20:00' } },
+                             doy:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'7:57', taikin:'19:30', rosen:'阪奈', kitan:'20:00' }, nch:{ okibo:'5:25', shukkin:'6:55', tochaku:'7:25', start:'7:57', taikin:'19:30', rosen:'阪奈', kitan:'20:00' } },
     { dia:19, type:'', hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:59', taikin:'19:05', rosen:'シャープ', kitan:'19:35' },
                              doy:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:13', taikin:'14:19', rosen:'シャープ', kitan:'14:50' }, nch:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:13', taikin:'14:19', rosen:'シャープ', kitan:'14:50' } },
     { dia:20, type:'', hei:{ okibo:'2:40', shukkin:'4:10', tochaku:'4:40', start:'5:14', taikin:'14:14', rosen:'西大寺', kitan:'14:45' },
@@ -5356,7 +5356,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20260923-001';
+const APP_VERSION = '20260924-001';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
