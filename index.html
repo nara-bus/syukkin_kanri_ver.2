@@ -267,6 +267,11 @@
     margin-bottom: 4px;
     text-transform: uppercase;
   }
+  .alt-badge {
+    display: inline-block; background: #d4f0e3; color: #2d7a50;
+    font-size: 13px; font-weight: 700; padding: 2px 12px;
+    border-radius: 20px; margin-bottom: 6px; letter-spacing: 0.05em;
+  }
   .shift-row {
     display: flex;
     align-items: center;
@@ -1551,7 +1556,8 @@ const ICHIRAN_DATA = [
     { dia:36, type:'', hei:{ okibo:'8:10', shukkin:'9:40', tochaku:'10:10', start:'10:42', taikin:'19:20', rosen:'シャープ', kitan:'19:50' },
                              doy:{ okibo:'9:30', shukkin:'11:00', tochaku:'11:30', start:'12:02', taikin:'20:23', rosen:'シャープ', kitan:'20:55' }, nch:{ okibo:'9:30', shukkin:'11:00', tochaku:'11:30', start:'12:02', taikin:'20:23', rosen:'シャープ', kitan:'20:55' } },
     { dia:37, type:'公休', hei:null, doy:null, nch:null },
-    { dia:38, type:'', hei:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'19:26', rosen:'都・阪奈', kitan:'20:00' },
+    { dia:38, type:'', hei:{ okibo:'4:15', shukkin:'5:45', tochaku:'6:15', start:'6:48', taikin:'19:26', rosen:'都・阪奈', kitan:'20:00',
+                                   alt:'都跡なし', okibo2:'5:25', shukkin2:'6:55', tochaku2:'7:25', start2:'7:59', taikin2:'19:26', rosen2:'阪奈', kitan2:'20:00' },
                              doy:{ okibo:'5:55', shukkin:'7:25', tochaku:'7:55', start:'8:28', taikin:'18:59', rosen:'阪奈', kitan:'19:30' }, nch:{ okibo:'5:55', shukkin:'7:25', tochaku:'7:55', start:'8:28', taikin:'18:59', rosen:'阪奈', kitan:'19:30' } },
     { dia:39, type:'中間', hei:{ okibo:'4:35', shukkin:'6:05', tochaku:'6:35', start:'7:09', taikin:'10:22', rosen:'シャープ', kitan:'10:55',
                                    okibo2:'13:40', shukkin2:'15:10', tochaku2:'15:40', start2:'16:10', taikin2:'22:08', rosen2:'天理', kitan2:'22:40' },
@@ -1784,8 +1790,8 @@ function _diaRowToShifts(row, dateKey) {
   // 中間（前半＋後半）
   if (row.okibo2 !== undefined) {
     return [
-      { shukkinTime: _convTime(row.start),  taikinTime: _convTime(row.taikin), rosen: row.rosen  || '', kikaku: _convTime(row.kitan),  _dateKey: dateKey },
-      { shukkinTime: _convTime(row.start2), taikinTime: _convTime(row.taikin2),rosen: row.rosen2 || '', kikaku: _convTime(row.kitan2), _dateKey: dateKey },
+      { shukkinTime: _convTime(row.start),  taikinTime: _convTime(row.taikin), rosen: row.rosen  || '', kikaku: _convTime(row.kitan),  _dateKey: dateKey, alt: row.alt || null },
+      { shukkinTime: _convTime(row.start2), taikinTime: _convTime(row.taikin2),rosen: row.rosen2 || '', kikaku: _convTime(row.kitan2), _dateKey: dateKey, alt: row.alt || null },
     ];
   }
   return [{ shukkinTime: _convTime(row.start), taikinTime: _convTime(row.taikin), rosen: row.rosen || '', kikaku: _convTime(row.kitan), _dateKey: dateKey }];
@@ -1842,8 +1848,8 @@ function _getScheduleRaw(date) {
   if (shifts === 'yobi') return { dia, dayType, yobi: true };
   let badgeType = '';
   if (entry.type === '手入') badgeType = '手入';
-  else if (row.shukkin2) badgeType = '中間';
-  return { dia, dayType, shifts, entryType: badgeType };
+  else if (row.shukkin2 && !row.alt) badgeType = '中間';
+  return { dia, dayType, shifts, entryType: badgeType, altLabel: row.alt || null };
 }
 
 function fmtTime(t) {
@@ -1963,7 +1969,7 @@ function buildShiftCard(shifts, isKyukyu, isYobi, isRinji, specialLabel, prevSch
 
     // ===== 前後シフト（同日内の別シフト、または前日／翌日）との間隔 =====
     let leftBoundary;
-    if (i > 0) {
+    if (i > 0 && !sh.alt) {
       const prevSh = shifts[i - 1];
       const prevKey = (prevSh._dateKey || '') + '_' + (i - 1);
       const ov = TAIKIN_OVERRIDES[prevKey];
@@ -1973,7 +1979,7 @@ function buildShiftCard(shifts, isKyukyu, isYobi, isRinji, specialLabel, prevSch
       leftBoundary = b.label ? b : { min: (b.min !== null && b.min !== undefined) ? b.min - 1440 : null };
     }
     let rightBoundary;
-    if (i < shifts.length - 1) {
+    if (i < shifts.length - 1 && !sh.alt) {
       const nextSh = shifts[i + 1];
       const nextKey = (nextSh._dateKey || '') + '_' + (i + 1);
       const ov = SHUKKIN_OVERRIDES[nextKey];
@@ -1995,7 +2001,7 @@ function buildShiftCard(shifts, isKyukyu, isYobi, isRinji, specialLabel, prevSch
 
     return `
     <div class="shift-card">
-      ${shifts.length > 1 ? `<div class="shift-sublabel">${i === 0 ? '中間前半' : '中間後半'}</div>` : ''}
+      ${sh.alt ? (i === 1 ? `<div class="alt-badge">${sh.alt}</div>` : '') : shifts.length > 1 ? `<div class="shift-sublabel">${i === 0 ? '中間前半' : '中間後半'}</div>` : ''}
       ${isRinji ? `<div class="rinji-badge">${rinjiLabel ? `${_rinjiSeriesDisp(rinjiLabel.series)}${rinjiLabel.num}` : '臨時ダイヤ'}</div>` : ''}
       ${s.showOkibo ? `<div class="shift-row">
         <span class="shift-icon">⏰️</span>
@@ -2178,7 +2184,7 @@ function _calBuildCellsHTML(monthDate) {
         dateBadge = tb ? ` <span class="cal-cell-type-badge" style="background:${tb[0]};color:${tb[1]}">${sched.entryType}</span>` : '';
 
         let timeHtml;
-        if (sched.entryType === '中間' && sh2) {
+        if ((sched.entryType === '中間' || sched.altLabel) && sh2) {
           const skOv2 = SHUKKIN_OVERRIDES[ovKey2];
           const tkOv2 = TAIKIN_OVERRIDES[ovKey2];
           const t2  = skOv2 !== undefined ? minToTime(skOv2) : fmtTime(sh2.shukkinTime);
@@ -2405,7 +2411,7 @@ function _printBuildDayCellHTML(date, isAdjacent) {
       dateBadge = tb ? ` <span class="cal-cell-type-badge" style="background:${tb[0]};color:${tb[1]}">${sched.entryType}</span>` : '';
 
       let timeHtml;
-      const isSplit = sched.entryType === '中間' && sh2;
+      const isSplit = (sched.entryType === '中間' || sched.altLabel) && sh2;
       if (isSplit) {
         const skOv2 = SHUKKIN_OVERRIDES[ovKey2];
         const tkOv2 = TAIKIN_OVERRIDES[ovKey2];
@@ -2617,7 +2623,7 @@ function _xlsxBuildRows(startDate, endDate) {
       const subject = sched.rinji
         ? (sched.rinjiLabel ? `${_rinjiSeriesDisp(sched.rinjiLabel.series)}${sched.rinjiLabel.num}` : '臨時')
         : sched.dia;
-      sched.shifts.forEach((sh, idx) => {
+      (sched.altLabel ? sched.shifts.slice(0, 1) : sched.shifts).forEach((sh, idx) => {
         const startMin = _xlsxEffectiveMin(dateKey, idx, true, sh.shukkinTime);
         const endMin = _xlsxEffectiveMin(dateKey, idx, false, sh.taikinTime);
         if (startMin === null || endMin === null) return;
@@ -2819,7 +2825,7 @@ function renderIchiran() {
     if (!src || src.type === '公休') return `<span class="pv-kyukyu">${(src && src.label) || '公休'}</span>`;
 
     // 中間ダイヤ：前半・後半両方表示
-    if (d.type === '中間' && src.start2) {
+    if ((d.type === '中間' || src.alt) && src.start2) {
       return `<span class="pv-time">${src.start||'—'}</span>〜<span class="pv-time">${src.taikin||'—'}</span> / <span class="pv-time">${src.start2}</span>〜<span class="pv-time">${src.taikin2||'—'}</span>`;
     }
 
@@ -2899,9 +2905,9 @@ function renderIchiran() {
     if (isMiddle) {
       return `<div class="ich-dow-block ${cls}${nextCls}">
         <div class="ich-dow-header"><span class="ich-dow-header-label">${label}</span>${todayMark}</div>
-        <div class="ich-middle-sep">▲ 前半</div>
+        <div class="ich-middle-sep">${sd && sd.alt ? '▲ 通常' : '▲ 前半'}</div>
         ${timeGridHtml(sd, false)}
-        <div class="ich-middle-sep">▼ 後半</div>
+        <div class="ich-middle-sep">${sd && sd.alt ? '▼ ' + sd.alt : '▼ 後半'}</div>
         ${timeGridHtml(sd, true)}
       </div>`;
     }
@@ -2936,7 +2942,7 @@ function renderIchiran() {
       : (d.type === '予備')
       ? `<div class="ich-card-body-inner"><div style="text-align:center;color:#3a6e50;font-weight:700;font-size:16px;padding:6px 0">予　　　備</div></div>`
       : `<div class="ich-card-body-inner">
-          ${dowBlockHtml('平日', 'hei', d.hei, heiTodayDow, isMiddle, heiNextHighlight)}
+          ${dowBlockHtml('平日', 'hei', d.hei, heiTodayDow, isMiddle || !!(d.hei && d.hei.alt), heiNextHighlight)}
           ${dowBlockHtml('土曜', 'doy', d.doy, doyTodayDow, false, doyNextHighlight)}
           ${dowBlockHtml('日祝', 'nch', d.nch, nchTodayDow, false, nchNextHighlight)}
         </div>`;
@@ -3484,7 +3490,7 @@ function applyMasterOverrides() {
     if (!row || row.yobi || row.type === '公休') continue;
 
     // 中間/通常フラグを適用
-    if (override._isMiddle !== undefined && dow === 'hei') {
+    if (override._isMiddle !== undefined && dow === 'hei' && !row.alt) {
       entry.type = override._isMiddle ? '中間' : '';
       if (!override._isMiddle) {
         _MASTER_FIELDS2.forEach(f => { delete row[f.key]; });
@@ -3622,7 +3628,7 @@ function _refreshMasterFields() {
   });
 
   // 平日のみ切り替えスイッチを表示
-  const showTypeSwitch = (_mDow === 'hei');
+  const showTypeSwitch = (_mDow === 'hei' && !row.alt);
   area.innerHTML = _buildMasterFieldsHtml(row, _mIsMiddle, showTypeSwitch);
 }
 
@@ -3667,9 +3673,9 @@ function _buildMasterFieldsHtml(row, isMiddle, showTypeSwitch) {
   }
   return `<div class="master-field-grid">
     ${typeSwitchHtml}
-    <div class="master-field-half-label">▲ 前半</div>
+    <div class="master-field-half-label">${row.alt ? '▲ 通常' : '▲ 前半'}</div>
     ${_MASTER_FIELDS.map(fieldRow).join('')}
-    <div class="master-field-half-label" style="margin-top:6px">▼ 後半</div>
+    <div class="master-field-half-label" style="margin-top:6px">${row.alt ? '▼ ' + row.alt : '▼ 後半'}</div>
     ${_MASTER_FIELDS2.map(fieldRow).join('')}
   </div>`;
 }
@@ -3823,7 +3829,8 @@ function masterConfirmOk() {
   const msg = document.getElementById('save-msg');
   if (msg) {
     const dowLabel = { hei:'平日', doy:'土曜', nch:'日祝' }[_mDow];
-    const typeLabel = (_mDow === 'hei') ? '（' + (_mIsMiddle ? '中間' : '通常') + '）' : '';
+    const _savedRow = (ICHIRAN_DATA.find(r => r.dia === _mDia) || {})[_mDow];
+    const typeLabel = (_mDow === 'hei') ? '（' + (_savedRow && _savedRow.alt ? '通常＋' + _savedRow.alt : (_mIsMiddle ? '中間' : '通常')) + '）' : '';
     msg.textContent = '✅ ダイヤ' + _mDia + '番（' + dowLabel + typeLabel + '）を保存しました';
     msg.style.color = '#34d399';
     setTimeout(() => { if (msg) msg.textContent = ''; }, 2500);
@@ -5409,7 +5416,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20260924-011';
+const APP_VERSION = '20260924-012';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
