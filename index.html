@@ -3954,9 +3954,21 @@ function toggleIchiranBtn() {
 
 
 // ========== ファイル保存・読込 ==========
+function makeExportName() {
+  const now = new Date();
+  return `出勤管理_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.json`;
+}
+function openSaveModal() {
+  document.getElementById('save-filename').textContent = makeExportName();
+  document.getElementById('save-modal').classList.remove('hidden');
+}
+function closeSaveModal() {
+  document.getElementById('save-modal').classList.add('hidden');
+}
 async function doExport() {
   const now = new Date();
-  const fname = `出勤管理_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.json`;
+  const fname = document.getElementById('save-filename').textContent || makeExportName();
+  closeSaveModal();
   const appData = {
     version: 1,
     appId: STORAGE_PREFIX,
@@ -3980,7 +3992,6 @@ async function doExport() {
   a.download = fname;
   a.click();
   URL.revokeObjectURL(url);
-  alert('💾 ダウンロードフォルダに保存しました！\nファイル: ' + fname);
 }
 
 async function loadAppFromFile() {
@@ -4564,7 +4575,7 @@ checkDefaultWarning();
       fn();
     });
   }
-  addTapOnly('btn-save', doExport);
+  addTapOnly('btn-save', openSaveModal);
   addTapOnly('btn-load', loadAppFromFile);
 })();
 
@@ -5227,6 +5238,21 @@ setInterval(updateClock, 30000);
   </div>
 </div>
 
+<!-- 保存確認モーダル -->
+<div id="save-modal" class="alert-overlay hidden">
+  <div class="alert-box" style="padding:24px 20px 20px">
+    <div style="font-size:16px;font-weight:700;color:#2d5a47;margin-bottom:12px">💾 データを保存</div>
+    <div style="font-size:13px;color:#555;line-height:1.7;margin-bottom:16px;text-align:left">
+      <strong id="save-filename" style="word-break:break-all"></strong><br>
+      「保存する」を押すと「ダウンロード」フォルダに保存されます。
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeSaveModal()" style="flex:1;padding:13px;background:#eee;border:none;border-radius:12px;color:#666;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit">キャンセル</button>
+      <button class="alert-ok" style="width:auto;flex:2" onclick="doExport()">保存する</button>
+    </div>
+  </div>
+</div>
+
 <!-- デフォルト値警告オーバーレイ -->
 <div id="time-error-overlay" class="alert-overlay hidden">
   <div class="alert-box">
@@ -5400,7 +5426,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20261021-002';
+const APP_VERSION = '20261021-003';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
