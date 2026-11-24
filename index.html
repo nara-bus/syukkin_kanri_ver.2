@@ -2299,10 +2299,11 @@ function renderCalendarTab() {
       #unkou-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:170; display:flex; align-items:center; justify-content:center; padding:10px; }
       #unkou-overlay.hidden { display:none; }
       #unkou-box { background:#fff; border-radius:16px; width:100%; max-width:560px; max-height:88vh; overflow-y:auto; padding:14px 12px 12px; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
-      .unkou-title { text-align:center; font-size:16px; font-weight:800; margin-bottom:8px; }
-      .unkou-cap { font-size:12px; font-weight:700; color:#2d6e50; margin:10px 0 3px; }
+      .unkou-title { text-align:center; font-size:18px; font-weight:800; margin-bottom:8px; }
+      .unkou-cap { font-size:17px; font-weight:700; color:#2d6e50; margin:10px 0 3px; }
       .unkou-wrap { overflow-x:auto; border:1px solid #cfd8d2; border-radius:8px; background:#fff; -webkit-overflow-scrolling:touch; }
       .unkou-wrap img { display:block; width:1800px; max-width:none; }
+      .unkou-sub { font-size:17px; font-weight:700; color:#2d6e50; }
       .unkou-hint { font-size:11px; color:#888; text-align:center; margin-top:6px; }
       .cal-day-card-close { margin-top:14px; width:100%; padding:12px; border:none; border-radius:10px; background:#eee; color:#333; font-size:14px; font-weight:700; cursor:pointer; }
       .cal-day-card-close:active { background:#ddd; }
@@ -2774,6 +2775,10 @@ function _unkouBtn(dateKey) {
   if (!_unkouKeys(getSchedule(new Date(p[0], p[1] - 1, p[2]))).length) return '';
   return `<button class="shukkin-btn unkou-btn" onclick="openUnkou('${dateKey}')">系統表</button>`;
 }
+function _unkouWorkText(k) {
+  const w = (typeof UNKOU_WORK !== 'undefined' && UNKOU_WORK[k] || '').split(' ');
+  return w.length === 2 ? `拘束時間 ${w[0]}　労働時間 ${w[1]}` : '';
+}
 function _unkouKeys(sched) {
   if (!sched || !sched.shifts || sched.kyukyu || sched.yobi || sched.rinji) return [];
   if (typeof UNKOU_IMG === 'undefined') return [];
@@ -2797,8 +2802,8 @@ function openUnkou(dateKey) {
     document.body.appendChild(ov);
   }
   document.getElementById('unkou-box').innerHTML = `
-    <div class="unkou-title">B${sched.dia} 系統表　${parts[1]}/${parts[2]}（${dow}）${sched.dayType}</div>
-    ${keys.map(k => `<div class="unkou-cap">${k.split('|')[0]}　${UNKOU_TIME[k] || ''}</div><div class="unkou-wrap" data-start="${(UNKOU_TIME[k] || '4:00').split('〜')[0]}"><img src="${UNKOU_IMG[k]}" alt="系統表 ${k}"></div>`).join('')}
+    <div class="unkou-title"${sched.dayType === '土曜' ? ' style="color:#1a5caa"' : sched.dayType === '日祝' ? ' style="color:#cc3333"' : ''}>B${sched.dia} 系統表　${parts[1]}/${parts[2]}（${dow}）${sched.dayType}</div>
+    ${keys.map(k => `<div class="unkou-cap">${k.split('|')[0]}　${UNKOU_TIME[k] || ''}<br><span class="unkou-sub">${_unkouWorkText(k)}</span></div><div class="unkou-wrap" data-start="${(UNKOU_TIME[k] || '4:00').split('〜')[0]}"><img src="${UNKOU_IMG[k]}" alt="系統表 ${k}"></div>`).join('')}
     <div class="unkou-hint">横にスクロールして見てな</div>
     <button class="cal-day-card-close" onclick="closeUnkou()">閉じる</button>`;
   ov.classList.remove('hidden');
@@ -5489,7 +5494,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20261123-006';
+const APP_VERSION = '20261123-012';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
