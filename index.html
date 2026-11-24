@@ -2258,7 +2258,7 @@ function renderCalendarTab() {
       .cal-cell-time { font-size:clamp(8px, 2.7vw, 11px); color:#555; line-height:1.25; }
       .cal-cell-time-tk { text-align:right; margin-top:1px; }
       .cal-cell-time-row { font-size:clamp(7.5px, 2.5vw, 10px); color:#555; text-align:left; line-height:1.25; letter-spacing:-0.3px; white-space:nowrap; font-variant-numeric:tabular-nums; }
-      .cal-cell-time-row2 { text-align:right; margin-top:1px; }
+      .cal-cell-time-row2 { text-align:right; margin-top:calc(2.5px + 1.25 * (clamp(8px, 2.7vw, 11px) - clamp(7.5px, 2.5vw, 10px))); }
       .cal-cell-time-sep { color:#aaa; margin:0 0.5px; }
       .cal-cell-dia.cal-ov, .cal-cell-time.cal-ov, .cal-cell-tag.cal-ov, .cal-cell-time-row.cal-ov, .cal-cell-time-row .cal-ov { color:#ff21a8; }
       .cal-cell-tag { font-size:11px; font-weight:700; margin-top:6px; text-align:center; white-space:nowrap; }
@@ -5494,7 +5494,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20261123-012';
+const APP_VERSION = '20261124-003';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
