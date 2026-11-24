@@ -1484,6 +1484,10 @@
   <button class="tab-btn" onclick="switchTab('settings')"><span class="tab-label">⚙️ 設定</span></button>
 </div>
 
+<script src="unkou.js"></script>
+<script src="unkou-hei.js"></script>
+<script src="unkou-doyo.js"></script>
+<script src="unkou-nichi.js"></script>
 <script>
 const ICHIRAN_DATA = [
     { dia:1, type:'', hei:{ okibo:'4:25', shukkin:'5:55', tochaku:'6:25', start:'6:57', taikin:'16:30', rosen:'イオン・都', kitan:'17:00' },
@@ -2033,7 +2037,7 @@ function buildShiftCard(shifts, isKyukyu, isYobi, isRinji, specialLabel, prevSch
         <span class="shift-label">帰宅（家に到着）</span>
         <span class="shift-time" style="color:#1a1a1a">${cardTime(kikakuMin)}</span>
       </div>` : ''}
-      ${sh.rosen !== undefined ? `<div class="rosen-row"><span class="rosen-icon">🚌</span><span class="rosen-label">路線:</span><span class="rosen-val">${sh.rosen || '—'}</span></div>` : ''}
+      ${sh.rosen !== undefined ? `<div class="rosen-row"><span class="rosen-icon">🚌</span><span class="rosen-label">路線:</span><span class="rosen-val">${sh.rosen || '—'}</span>${i === 0 ? _unkouBtn(dateKey) : ''}</div>` : ''}
     </div>`;
   }).join('')}</div>`;
 }
@@ -2291,6 +2295,15 @@ function renderCalendarTab() {
       .cal-day-card-dia-row .dia-tag { font-size:18px; }
       .dia-row-side { flex:0 0 30px; display:flex; align-items:center; }
       .dia-row-side-right { justify-content:flex-start; }
+      .unkou-btn { margin-left:auto; color:#0b7285; font-size:16px; padding:3px 9px; }
+      #unkou-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:170; display:flex; align-items:center; justify-content:center; padding:10px; }
+      #unkou-overlay.hidden { display:none; }
+      #unkou-box { background:#fff; border-radius:16px; width:100%; max-width:560px; max-height:88vh; overflow-y:auto; padding:14px 12px 12px; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+      .unkou-title { text-align:center; font-size:16px; font-weight:800; margin-bottom:8px; }
+      .unkou-cap { font-size:12px; font-weight:700; color:#2d6e50; margin:10px 0 3px; }
+      .unkou-wrap { overflow-x:auto; border:1px solid #cfd8d2; border-radius:8px; background:#fff; -webkit-overflow-scrolling:touch; }
+      .unkou-wrap img { display:block; width:1800px; max-width:none; }
+      .unkou-hint { font-size:11px; color:#888; text-align:center; margin-top:6px; }
       .cal-day-card-close { margin-top:14px; width:100%; padding:12px; border:none; border-radius:10px; background:#eee; color:#333; font-size:14px; font-weight:700; cursor:pointer; }
       .cal-day-card-close:active { background:#ddd; }
       #cal-day-card-box .shift-card {
@@ -2751,6 +2764,56 @@ function openCalDayCard(dateKey, keepOrigin) {
     <button class="cal-day-card-close" onclick="closeCalDayCard()">閉じる</button>
   `;
   document.getElementById('cal-day-card-overlay').classList.remove('hidden');
+}
+
+// ===== 系統表（運行図の画像を表示） =====
+function _unkouBtn(dateKey) {
+  if (!dateKey) return '';
+  const p = dateKey.split('-').map(Number);
+  if (p.length !== 3 || p.some(isNaN)) return '';
+  if (!_unkouKeys(getSchedule(new Date(p[0], p[1] - 1, p[2]))).length) return '';
+  return `<button class="shukkin-btn unkou-btn" onclick="openUnkou('${dateKey}')">系統表</button>`;
+}
+function _unkouKeys(sched) {
+  if (!sched || !sched.shifts || sched.kyukyu || sched.yobi || sched.rinji) return [];
+  if (typeof UNKOU_IMG === 'undefined') return [];
+  const d = sched.dayType === '土曜' ? '土' : sched.dayType === '日祝' ? '日' : '平';
+  return Object.keys(UNKOU_IMG).filter(k => k.startsWith(sched.dia + '-') && k.endsWith('|' + d));
+}
+function openUnkou(dateKey) {
+  const parts = dateKey.split('-').map(Number);
+  const date = new Date(parts[0], parts[1] - 1, parts[2]);
+  const sched = getSchedule(date);
+  const keys = _unkouKeys(sched);
+  if (!keys.length) return;
+  const dow = ['日','月','火','水','木','金','土'][date.getDay()];
+  let ov = document.getElementById('unkou-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'unkou-overlay';
+    ov.className = 'hidden';
+    ov.onclick = e => { if (e.target === ov) closeUnkou(); };
+    ov.innerHTML = '<div id="unkou-box"></div>';
+    document.body.appendChild(ov);
+  }
+  document.getElementById('unkou-box').innerHTML = `
+    <div class="unkou-title">B${sched.dia} 系統表　${parts[1]}/${parts[2]}（${dow}）${sched.dayType}</div>
+    ${keys.map(k => `<div class="unkou-cap">${k.split('|')[0]}　${UNKOU_TIME[k] || ''}</div><div class="unkou-wrap" data-start="${(UNKOU_TIME[k] || '4:00').split('〜')[0]}"><img src="${UNKOU_IMG[k]}" alt="系統表 ${k}"></div>`).join('')}
+    <div class="unkou-hint">横にスクロールして見てな</div>
+    <button class="cal-day-card-close" onclick="closeUnkou()">閉じる</button>`;
+  ov.classList.remove('hidden');
+  ov.querySelectorAll('.unkou-wrap').forEach(w => {
+    const img = w.firstElementChild;
+    const go = () => {
+      const [h, m] = w.dataset.start.split(':').map(Number);
+      w.scrollLeft = Math.max(0, (UNKOU_META.p4 + ((h + m / 60) - 4) * UNKOU_META.pph) * (img.width / UNKOU_META.W) - 40);
+    };
+    if (img.complete) go(); else img.onload = go;
+  });
+}
+function closeUnkou() {
+  const ov = document.getElementById('unkou-overlay');
+  if (ov) ov.classList.add('hidden');
 }
 
 function _calDayCardNav(deltaDays) {
@@ -5426,7 +5489,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20261021-003';
+const APP_VERSION = '20261123-006';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
