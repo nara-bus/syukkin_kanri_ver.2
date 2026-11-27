@@ -1,5 +1,5 @@
 // ※キャッシュ名の日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。
-const CACHE_NAME = 'shukkin-20261124-007';
+const CACHE_NAME = 'shukkin-20261128-001';
 const ASSETS = [
   './',
   './index.html',
@@ -30,6 +30,8 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // 祝日API（外部）はキャッシュせず、常にネットワークから取得する
+  if (e.request.url.indexOf('holidays-jp.github.io') !== -1) return;
   // index.htmlはネットワークファースト（常に最新を取得）
   if (e.request.url.endsWith('index.html') || e.request.url.endsWith('/')) {
     e.respondWith(

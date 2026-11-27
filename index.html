@@ -1627,6 +1627,54 @@ const DOWSTR = ['日','月','火','水','木','金','土'];
 // このアプリ固有の値。他の改正版アプリと絶対に重複させないこと。通常のメンテナンス編集では変更しない。
 const STORAGE_PREFIX = 'b202610_';
 
+// ===== 祝日の自動更新 =====
+// 毎年3月1日以降に最初にアプリを開いたとき、祝日データを1回だけネットから取得する。
+// 失敗したら保存せず、次にアプリを開くたびに成功するまで再試行する。取得後は翌年の3月まで取りに行かない。
+// 取得した祝日は、上の HOLIDAYS に追加する（元のデータは消さない）。
+const HOLIDAY_API = 'https://holidays-jp.github.io/api/v1/date.json';
+const HOLIDAY_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function _holidayLoadSaved() {
+  try {
+    const o = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'holidays') || 'null');
+    if (!o || !Array.isArray(o.dates)) return;
+    o.dates.forEach(d => { if (HOLIDAY_DATE_RE.test(d)) HOLIDAYS.add(d); });
+  } catch (e) {}
+}
+function _holidayNeedsFetch(now) {
+  let last = null;
+  try { last = localStorage.getItem(STORAGE_PREFIX + 'holidaysFetched'); } catch (e) {}
+  if (!last) return true; // 初回
+  const mar1 = now.getFullYear() + '-03-01';
+  return getDateKey(now) >= mar1 && last < mar1;
+}
+async function holidayAutoUpdate() {
+  const now = new Date();
+  if (!_holidayNeedsFetch(now)) return;
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 3000); // 圏外でも固まらないよう3秒で諦める
+  try {
+    const res = await fetch(HOLIDAY_API, { signal: ctl.signal, cache: 'no-store' });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('http');
+    const json = await res.json();
+    const dates = Object.keys(json).filter(d => HOLIDAY_DATE_RE.test(d));
+    // 検査：件数が少なすぎる、または今年の祝日が1件も無いデータは、失敗扱い（保存しない）
+    if (dates.length < 100 || !dates.some(d => d.startsWith(String(now.getFullYear())))) throw new Error('bad');
+    const recent = dates.filter(d => d >= '2024-01-01');
+    localStorage.setItem(STORAGE_PREFIX + 'holidays', JSON.stringify({ dates: recent }));
+    localStorage.setItem(STORAGE_PREFIX + 'holidaysFetched', getDateKey(now));
+    const before = HOLIDAYS.size;
+    recent.forEach(d => HOLIDAYS.add(d));
+    if (HOLIDAYS.size !== before) {
+      if (currentView === 'calendar') renderCalendarTab();
+      if (currentView === 'ichiran') renderIchiran();
+    }
+  } catch (e) {
+    clearTimeout(timer); // 失敗：保存しない → 次回起動時にまた試す
+  }
+}
+_holidayLoadSaved();
+
 // --- Settings (persisted in localStorage) ---
 // デフォルト値（キャッシュクリア時に使用）
 const DEFAULT_SETTINGS = {
@@ -4630,6 +4678,7 @@ switchTab('calendar');
 
 // スクリプト末尾で直接呼び出し（DOMContentLoaded は既に発火済みのため）
 checkDefaultWarning();
+holidayAutoUpdate();
 
 // 保存・読込ボタン：touchend のみ登録して Android の touch+click 二重発火を防ぐ
 (function() {
@@ -5499,7 +5548,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20261124-007';
+const APP_VERSION = '20261128-001';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
