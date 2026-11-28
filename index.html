@@ -1658,8 +1658,12 @@ async function holidayAutoUpdate() {
     if (!res.ok) throw new Error('http');
     const json = await res.json();
     const dates = Object.keys(json).filter(d => HOLIDAY_DATE_RE.test(d));
-    // 検査：件数が少なすぎる、または今年の祝日が1件も無いデータは、失敗扱い（保存しない）
-    if (dates.length < 100 || !dates.some(d => d.startsWith(String(now.getFullYear())))) throw new Error('bad');
+    // 検査：件数が少なすぎる、今年の祝日が無い、または3/1以降なのに翌年の祝日が無いデータは、失敗扱い（保存しない）
+    // （翌年分が無いまま保存すると、翌年の3/1まで取り直さなくなるため）
+    const y = now.getFullYear();
+    const hasYear = yr => dates.some(d => d.startsWith(String(yr)));
+    const needNext = getDateKey(now) >= y + '-03-01';
+    if (dates.length < 100 || !hasYear(y) || (needNext && !hasYear(y + 1))) throw new Error('bad');
     const recent = dates.filter(d => d >= '2024-01-01');
     localStorage.setItem(STORAGE_PREFIX + 'holidays', JSON.stringify({ dates: recent }));
     localStorage.setItem(STORAGE_PREFIX + 'holidaysFetched', getDateKey(now));
@@ -5548,7 +5552,7 @@ function installPWA() {
 <script>
 // ── PWA: Service Worker 登録 ──
 // ※バージョン日付は古い値を引き継がず、必ず編集する「当日」の日付に変更すること。日付が変わったら連番(NNN)は001にリセット。同日内の複数回編集は連番のみ加算。
-const APP_VERSION = '20261128-001';
+const APP_VERSION = '20261128-002';
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => {
